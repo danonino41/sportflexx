@@ -1,0 +1,244 @@
+<?php
+require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
+
+session_start();
+if (!isset($_SESSION['IdUsuario'])) {
+    header("Location: ../PHP/login2.php");
+    exit();
+}
+
+$IdUsuario = $_SESSION['IdUsuario'];
+
+$obj = new Conectar();
+$conexion = $obj->getConexion();
+
+$sql = "SELECT cliente.*, usuario.NombreUsuario, usuario.CorreoElectronico, usuario.Contrasena 
+        FROM cliente 
+        INNER JOIN usuario ON cliente.IdUsuario = usuario.IdUsuario 
+        WHERE cliente.IdUsuario = ?";
+$stmt = mysqli_prepare($conexion, $sql);
+mysqli_stmt_bind_param($stmt, "i", $IdUsuario);
+mysqli_stmt_execute($stmt);
+$resultado = mysqli_stmt_get_result($stmt);
+$row = mysqli_fetch_assoc($resultado);
+
+mysqli_stmt_close($stmt);
+mysqli_close($conexion);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .MarcodeCaja {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+            /* Aumenta el ancho máximo del contenedor */
+            padding-bottom: 100px;
+        }
+
+        .page-title {
+            color: #343a40;
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            border: none;
+            border-bottom: 1px solid #ced4da;
+            background-color: #f9f9f9;
+            padding: 12px;
+            /* Aumenta un poco el padding */
+            width: 100%;
+            /* Asegúrate de que los campos ocupen todo el ancho posible */
+            box-sizing: border-box;
+            /* Incluye padding en el cálculo del ancho */
+        }
+
+        .form-control:focus {
+            border-bottom-color: #0dcaf0;
+            background-color: #ffffff;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .form-horizontal .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            /* Aumenta el espacio entre las filas */
+        }
+
+        .form-horizontal label {
+            flex: 0 0 25%;
+            /* Ajusta el tamaño de las etiquetas a 25% del contenedor */
+            max-width: 25%;
+            padding-right: 20px;
+            /* Aumenta el espacio entre etiqueta y campo */
+            text-align: right;
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .form-horizontal .col-md-9 {
+            flex: 0 0 75%;
+            /* Ajusta el tamaño de los campos al 75% */
+            max-width: 75%;
+        }
+
+        .container-fluid {
+            max-width: 1200px;
+            /* Ajusta el ancho máximo del contenedor principal */
+            margin: 0 auto;
+            /* Centra el contenedor */
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Cuerpo -->
+    <div class="MarcodeCaja">
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h3 class="text-themecolor">Mi Perfil</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-xlg-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <center class="m-t-30">
+                                    <!-- Imagen fija, no editable -->
+                                    <img src="../ImagenQuienesSomos/imagen3.jpg" class="img-circle profile-img"
+                                        width="130" />
+                                    <h4 class="card-subtitle mt-2">Cliente</h4>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-xlg-9">
+                        <div class="card">
+                            <div class="card-body">
+                                <?php if ($row) { ?>
+                                <form class="form-horizontal form-material mx-2" id="profileForm">
+
+                                    <!-- Campos que se pueden editar -->
+                                    <div class="row mb-3">
+                                        <label for="editNombreUsuario" class="col-md-3 col-form-label">Nombre
+                                            Usuario:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editNombreUsuario"
+                                                name="NombreUsuario" value="<?php echo $row['NombreUsuario']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editCorreoElectronico" class="col-md-3 col-form-label">Correo
+                                            Electrónico:</label>
+                                        <div class="col-md-9">
+                                            <input type="email" class="form-control" id="editCorreoElectronico"
+                                                name="CorreoElectronico"
+                                                value="<?php echo $row['CorreoElectronico']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editContrasena" class="col-md-3 col-form-label">Contraseña:</label>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" id="editContrasena"
+                                                name="Contrasena" value="<?php echo $row['Contrasena']; ?>">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="editNombre" class="col-md-3 col-form-label">Nombre:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editNombre" name="Nombre"
+                                                value="<?php echo $row['Nombre']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editApellido" class="col-md-3 col-form-label">Apellido:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editApellido" name="Apellido"
+                                                value="<?php echo $row['Apellido']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editSexo" class="col-md-3 col-form-label">Sexo:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editSexo" name="Sexo"
+                                                value="<?php echo $row['Sexo']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editFechaNacimiento" class="col-md-3 col-form-label">Fecha de
+                                            Nacimiento:</label>
+                                        <div class="col-md-9">
+                                            <input type="date" class="form-control" id="editFechaNacimiento"
+                                                name="FechaNacimiento" value="<?php echo $row['FechaNacimiento']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editTelefono" class="col-md-3 col-form-label">Teléfono:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editTelefono" name="Telefono"
+                                                value="<?php echo $row['Telefono']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="editDni" class="col-md-3 col-form-label">DNI:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" id="editDni" name="Dni"
+                                                value="<?php echo $row['Dni']; ?>">
+                                        </div>
+                                    </div>
+                                </form>
+                                <?php } else { ?>
+                                <div class="alert alert-danger" role="alert">
+                                    No se encontraron datos del usuario.
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="bg-dark p-4 text-center text-white mt-auto">
+        <p class="mb-0">Hecho por Team flech</p>
+    </footer>
+</body>
+
+</html>
