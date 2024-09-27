@@ -2,14 +2,11 @@
 require_once(__DIR__ . "/../coneccion/conector.php");
 
 if (isset($_POST['btnRegistrar'])) {
-    // Validar que todos los campos requeridos estén presentes
+    // Aquí eliminamos los campos que ya no existen
     $requiredFields = [
-        'NombreUsuario', 'CorreoElectronico', 'Contrasena', 
-        'Nombre', 'Apellido', 'Sexo', 'FechaNacimiento', 
-        'Telefono', 'Dni', 'Departamento', 'Provincia', 
-        'Distrito', 'Direccion'
+        'NombreUsuario', 'CorreoElectronico', 'Contrasena' // Mantener solo los campos existentes
     ];
-    
+
     foreach ($requiredFields as $field) {
         if (empty($_POST[$field])) {
             echo "Por favor, complete todos los campos.";
@@ -20,17 +17,7 @@ if (isset($_POST['btnRegistrar'])) {
     // Recoger datos del formulario
     $nombreUsuario = $_POST['NombreUsuario'];
     $correoElectronico = $_POST['CorreoElectronico'];
-    $contrasena = password_hash($_POST['Contrasena'], PASSWORD_DEFAULT);
-    $nombre = $_POST['Nombre'];
-    $apellido = $_POST['Apellido'];
-    $sexo = $_POST['Sexo'];
-    $fechaNacimiento = $_POST['FechaNacimiento'];
-    $telefono = $_POST['Telefono'];
-    $dni = $_POST['Dni'];
-    $departamento = $_POST['Departamento'];
-    $provincia = $_POST['Provincia'];
-    $distrito = $_POST['Distrito'];
-    $direccion = $_POST['Direccion'];
+    $contrasena = $_POST['Contrasena'];  // Sin hash, en texto plano
 
     $obj = new Conectar();
     $conexion = $obj->getConexion();
@@ -39,29 +26,11 @@ if (isset($_POST['btnRegistrar'])) {
     $conexion->begin_transaction();
 
     try {
-        // Insertar en la tabla usuario
+        // Insertar en la tabla usuario (ajustar columnas según la estructura actual)
         $stmt = $conexion->prepare("INSERT INTO usuario (NombreUsuario, CorreoElectronico, Contrasena, IdRol) VALUES (?, ?, ?, 2)");
         $stmt->bind_param("sss", $nombreUsuario, $correoElectronico, $contrasena);
         if (!$stmt->execute()) {
             throw new Exception("Error al insertar en la tabla usuario: " . $stmt->error);
-        }
-        $idUsuario = $conexion->insert_id;
-        $stmt->close();
-
-        // Insertar en la tabla cliente
-        $stmt = $conexion->prepare("INSERT INTO cliente (IdUsuario, Nombre, Apellido, Sexo, FechaNacimiento, Telefono, Dni) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssss", $idUsuario, $nombre, $apellido, $sexo, $fechaNacimiento, $telefono, $dni);
-        if (!$stmt->execute()) {
-            throw new Exception("Error al insertar en la tabla cliente: " . $stmt->error);
-        }
-        $idCliente = $conexion->insert_id;
-        $stmt->close();
-
-        // Insertar en la tabla dirección
-        $stmt = $conexion->prepare("INSERT INTO direccion (IdCliente, Departamento, Provincia, Distrito, Direccion) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("issss", $idCliente, $departamento, $provincia, $distrito, $direccion);
-        if (!$stmt->execute()) {
-            throw new Exception("Error al insertar en la tabla dirección: " . $stmt->error);
         }
         $stmt->close();
 

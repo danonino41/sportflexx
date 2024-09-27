@@ -23,9 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $dni = intval($_POST['Dni'] ?? 1);
 
     // Datos de la dirección
-    $departamento = $_POST['Departamento'] ?? '';
-    $provincia = $_POST['Provincia'] ?? '';
-    $distrito = $_POST['Distrito'] ?? '';
     $direccion = $_POST['Direccion'] ?? '';
 
     $obj = new Conectar();
@@ -37,15 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Actualizar los datos del usuario
         if (!empty($contrasena)) {
-            // Si se proporciona una nueva contraseña, codificarla
-            $contrasenaCodificada = password_hash($contrasena, PASSWORD_DEFAULT);
+            // Si se proporciona una nueva contraseña, se actualiza sin hashear
             $sqlUsuario = "UPDATE usuario SET NombreUsuario = ?, CorreoElectronico = ?, Contrasena = ?, IdRol = ? WHERE IdUsuario = ?";
             $stmtUsuario = $conexion->prepare($sqlUsuario);
-            $stmtUsuario->bind_param("sssii", $nombreUsuario, $correoElectronico, $contrasenaCodificada, $idRol, $idUsuario);
+            $stmtUsuario->bind_param("sssii", $nombreUsuario, $correoElectronico, $contrasena, $idRol, $idUsuario);
         } else {
             // Si no se proporciona una nueva contraseña, no actualizarla
             $sqlUsuario = "UPDATE usuario SET NombreUsuario = ?, CorreoElectronico = ?, IdRol = ? WHERE IdUsuario = ?";
-            $stmtUsuario = $conexion->prepare($sqlUsuario);
+            $stmtUsuario->prepare($sqlUsuario);
             $stmtUsuario->bind_param("ssii", $nombreUsuario, $correoElectronico, $idRol, $idUsuario);
         }
         $stmtUsuario->execute();
@@ -59,9 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmtCliente->close();
 
         // Actualizar los datos de la dirección
-        $sqlDireccion = "UPDATE direccion SET Departamento = ?, Provincia = ?, Distrito = ?, Direccion = ? WHERE IdCliente = ?";
+        $sqlDireccion = "UPDATE direccion SET Direccion = ? WHERE IdCliente = ?";
         $stmtDireccion = $conexion->prepare($sqlDireccion);
-        $stmtDireccion->bind_param("ssssi", $departamento, $provincia, $distrito, $direccion, $idCliente);
+        $stmtDireccion->bind_param("si", $direccion, $idCliente);
         $stmtDireccion->execute();
         $stmtDireccion->close();
 

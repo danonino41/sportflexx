@@ -6,10 +6,10 @@ $conexion = $obj->getConexion();
 if (!$conexion) {
     die("Error en la conexión: " . mysqli_connect_error());
 }
-$sqlClientes = "SELECT cliente.*, usuario.IdUsuario, usuario.NombreUsuario, usuario.CorreoElectronico, usuario.Contrasena, usuario.IdRol, direccion.IdDireccion, direccion.Departamento, direccion.Provincia, direccion.Distrito, direccion.Direccion 
+$sqlClientes = "SELECT cliente.*, usuario.IdUsuario, usuario.NombreUsuario, usuario.CorreoElectronico, usuario.Contrasena, usuario.IdRol, 
+                (SELECT direccion.Direccion FROM direccion WHERE direccion.IdCliente = cliente.IdCliente LIMIT 1) as Direccion 
                 FROM cliente 
-                JOIN usuario ON cliente.IdUsuario = usuario.IdUsuario 
-                LEFT JOIN direccion ON cliente.IdCliente = direccion.IdCliente";
+                JOIN usuario ON cliente.IdUsuario = usuario.IdUsuario";
 $rsClientes = mysqli_query($conexion, $sqlClientes);
 ?>
 
@@ -28,82 +28,84 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <style>
-        body {
-            padding-top: 56px;
-            background-color: white;
-            color: black;
-        }
+    body {
+        background-color: white;
+        color: black;
+    }
 
-        .card {
-            width: 100%;
-            background-color: white;
-        }
+    .card {
+        width: 100%;
+        background-color: white;
+    }
 
-        .btn {
-            margin-bottom: 10px;
-        }
+    .btn {
+        margin-bottom: 10px;
+    }
 
-        .table-responsive {
-            overflow-x: auto;
-            min-width: 100%;
-        }
+    .table-responsive {
+        max-height: 400px; /* Limita la altura de la tabla para scroll vertical */
+        overflow-y: auto; /* Habilita el scroll vertical */
+        overflow-x: auto; /* Habilita el scroll horizontal */
+        min-width: 100%;
+    }
 
-        .modal-content {
-            background-color: #2c2c2c;
-            color: white;
-        }
+    /* Bordes estilo Excel */
+    .table-bordered th,
+    .table-bordered td {
+        border: 2px solid black; /* Bordes de 2px color negro */
+    }
 
-        .modal-header {
-            border-bottom: 1px solid #444;
-        }
+    .table-bordered {
+        border-collapse: collapse; /* Asegura que no haya separación entre bordes */
+    }
 
-        .modal-footer {
-            border-top: 1px solid #444;
-        }
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1; /* Efecto hover en filas */
+    }
 
-        .form-control {
-            background-color: #333;
-            color: white;
-            border: 1px solid #444;
-        }
+    .form-control {
+        background-color: #333;
+        color: white;
+        border: 1px solid #444;
+    }
 
-        .form-select {
-            background-color: #333;
-            color: white;
-            border: 1px solid #444;
-        }
+    .form-select {
+        background-color: #333;
+        color: white;
+        border: 1px solid #444;
+    }
 
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #1f1f1f;
-            padding: 10px 0;
-            text-align: center;
-        }
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #1f1f1f;
+        padding: 10px 0;
+        text-align: center;
+    }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
 
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
 
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-        }
+    .btn-success {
+        background-color: #1e00ff;
+        border-color: #1e00ff;
+    }
 
-        .is-invalid {
-            border-color: #dc3545;
-        }
+    .is-invalid {
+        border-color: #dc3545;
+    }
 
-        .text-danger {
-            color: #dc3545 !important;
-        }
+    .text-danger {
+        color: #dc3545 !important;
+    }
     </style>
 </head>
 
@@ -123,16 +125,12 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
                     aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="../../../Cliente/HTML/Logout.php">Logout</a></li>
+                    <li><a class="dropdown-item" href="../../../Cliente/HTML/Logout.php">Salir</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
+
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -161,7 +159,7 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-book-open"></i>
                             </div>
-                            Pages
+                            Paginas
                             <div class="sb-sidenav-collapse-arrow">
                                 <i class="fas fa-angle-down"></i>
                             </div>
@@ -197,8 +195,8 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                                 </nav>
                             </nav>
                         </div>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReports"
-                            aria-expanded="false" aria-controls="collapseReports">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseReports" aria-expanded="false" aria-controls="collapseReports">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-chart-line"></i>
                             </div>
@@ -216,25 +214,22 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                         </div>
                     </div>
                 </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    Start Bootstrap
-                </div>
             </nav>
         </div>
+
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Clientes</h1>
+                    <button class="btn btn-success mb-3" id="addClientBtn" data-bs-toggle="modal" data-bs-target="#modalCliente" onclick="clearForm()">Agregar Cliente</button>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Lista de Clientes
                         </div>
                         <div class="card-body">
-                            <button class="btn btn-success mb-3" id="addClientBtn" data-bs-toggle="modal" data-bs-target="#modalCliente" onclick="clearForm()">Agregar Cliente</button>
                             <div class="table-responsive">
-                                <table id="datatablesSimple" class="table table-striped">
+                                <table id="datatablesSimple" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>ID Usuario</th>
@@ -249,39 +244,31 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                                             <th>Fecha de Nacimiento</th>
                                             <th>Teléfono</th>
                                             <th>DNI</th>
-                                            <th>ID Dirección</th>
-                                            <th>Departamento</th>
-                                            <th>Provincia</th>
-                                            <th>Distrito</th>
                                             <th>Dirección</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php while ($cliente = mysqli_fetch_assoc($rsClientes)) : ?>
-                                            <tr>
-                                                <td><?php echo $cliente['IdUsuario']; ?></td>
-                                                <td><?php echo $cliente['NombreUsuario']; ?></td>
-                                                <td><?php echo $cliente['CorreoElectronico']; ?></td>
-                                                <td><?php echo $cliente['Contrasena']; ?></td>
-                                                <td><?php echo $cliente['IdRol']; ?></td>
-                                                <td><?php echo $cliente['IdCliente']; ?></td>
-                                                <td><?php echo $cliente['Nombre']; ?></td>
-                                                <td><?php echo $cliente['Apellido']; ?></td>
-                                                <td><?php echo $cliente['Sexo']; ?></td>
-                                                <td><?php echo $cliente['FechaNacimiento']; ?></td>
-                                                <td><?php echo $cliente['Telefono']; ?></td>
-                                                <td><?php echo $cliente['Dni']; ?></td>
-                                                <td><?php echo $cliente['IdDireccion']; ?></td>
-                                                <td><?php echo $cliente['Departamento']; ?></td>
-                                                <td><?php echo $cliente['Provincia']; ?></td>
-                                                <td><?php echo $cliente['Distrito']; ?></td>
-                                                <td><?php echo $cliente['Direccion']; ?></td>
-                                                <td>
-                                                    <button class="btn btn-warning edit-btn" data-bs-toggle="modal" data-bs-target="#modalCliente" data-cliente='<?php echo json_encode($cliente); ?>'>Editar</button>
-                                                    <button class="btn btn-danger delete-btn" data-id="<?php echo $cliente['IdCliente']; ?>">Eliminar</button>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td><?php echo $cliente['IdUsuario']; ?></td>
+                                            <td><?php echo $cliente['NombreUsuario']; ?></td>
+                                            <td><?php echo $cliente['CorreoElectronico']; ?></td>
+                                            <td><?php echo $cliente['Contrasena']; ?></td>
+                                            <td><?php echo $cliente['IdRol']; ?></td>
+                                            <td><?php echo $cliente['IdCliente']; ?></td>
+                                            <td><?php echo $cliente['Nombre']; ?></td>
+                                            <td><?php echo $cliente['Apellido']; ?></td>
+                                            <td><?php echo $cliente['Sexo']; ?></td>
+                                            <td><?php echo $cliente['FechaNacimiento']; ?></td>
+                                            <td><?php echo $cliente['Telefono']; ?></td>
+                                            <td><?php echo $cliente['Dni']; ?></td>
+                                            <td><?php echo $cliente['Direccion']; ?></td>
+                                            <td>
+                                                <button class="btn btn-warning edit-btn" data-bs-toggle="modal" data-bs-target="#modalCliente" data-cliente='<?php echo json_encode($cliente); ?>'>Editar</button>
+                                                <button class="btn btn-danger delete-btn" data-id="<?php echo $cliente['IdCliente']; ?>">Eliminar</button>
+                                            </td>
+                                        </tr>
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>
@@ -294,11 +281,6 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
                         <div class="text-muted">Copyright &copy; SPORTFLEXX 2024</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
                     </div>
                 </div>
             </footer>
@@ -323,12 +305,14 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                         </div>
                         <div class="mb-3">
                             <label for="cliente-NombreUsuario">Nombre Usuario:</label>
-                            <input type="text" id="cliente-NombreUsuario" name="NombreUsuario" class="form-control" required>
+                            <input type="text" id="cliente-NombreUsuario" name="NombreUsuario" class="form-control"
+                                required>
                             <span id="errorcliente-NombreUsuario" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="cliente-CorreoElectronico">Correo Electrónico:</label>
-                            <input type="email" id="cliente-CorreoElectronico" name="CorreoElectronico" class="form-control" required>
+                            <input type="email" id="cliente-CorreoElectronico" name="CorreoElectronico"
+                                class="form-control" required>
                             <span id="errorcliente-CorreoElectronico" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -362,7 +346,8 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                         </div>
                         <div class="mb-3">
                             <label for="cliente-FechaNacimiento">Fecha de Nacimiento:</label>
-                            <input type="date" id="cliente-FechaNacimiento" name="FechaNacimiento" class="form-control" required>
+                            <input type="date" id="cliente-FechaNacimiento" name="FechaNacimiento" class="form-control"
+                                required>
                             <span id="errorcliente-FechaNacimiento" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -376,21 +361,6 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                             <span id="errorcliente-Dni" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
-                            <label for="cliente-Departamento">Departamento:</label>
-                            <input type="text" id="cliente-Departamento" name="Departamento" class="form-control" required>
-                            <span id="errorcliente-Departamento" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cliente-Provincia">Provincia:</label>
-                            <input type="text" id="cliente-Provincia" name="Provincia" class="form-control" required>
-                            <span id="errorcliente-Provincia" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cliente-Distrito">Distrito:</label>
-                            <input type="text" id="cliente-Distrito" name="Distrito" class="form-control" required>
-                            <span id="errorcliente-Distrito" class="text-danger"></span>
-                        </div>
-                        <div class="mb-3">
                             <label for="cliente-Direccion">Dirección:</label>
                             <input type="text" id="cliente-Direccion" name="Direccion" class="form-control" required>
                             <span id="errorcliente-Direccion" class="text-danger"></span>
@@ -402,19 +372,21 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
     <script src="../js/scripts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="../assets/demo/chart-area-demo.js"></script>
     <script src="../assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
     <script src="../js/datatables-simple-demo.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // Mostrar datos en el formulario al hacer clic en Editar
             const editButtons = document.querySelectorAll(".edit-btn");
             editButtons.forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const cliente = JSON.parse(this.getAttribute("data-cliente"));
                     document.getElementById("IdCliente").value = cliente.IdCliente;
                     document.getElementById("cliente-IdUsuario").value = cliente.IdUsuario;
@@ -428,18 +400,14 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                     document.getElementById("cliente-FechaNacimiento").value = cliente.FechaNacimiento;
                     document.getElementById("cliente-Telefono").value = cliente.Telefono;
                     document.getElementById("cliente-Dni").value = cliente.Dni;
-                    document.getElementById("cliente-Departamento").value = cliente.Departamento;
-                    document.getElementById("cliente-Provincia").value = cliente.Provincia;
-                    document.getElementById("cliente-Distrito").value = cliente.Distrito;
                     document.getElementById("cliente-Direccion").value = cliente.Direccion;
                     document.getElementById("cliente-form").action = "EditarCliente.php";
                 });
             });
 
-            // Confirmar eliminación de cliente
             const deleteButtons = document.querySelectorAll(".delete-btn");
             deleteButtons.forEach(button => {
-                button.addEventListener("click", function() {
+                button.addEventListener("click", function () {
                     const idCliente = this.getAttribute("data-id");
                     if (confirm("¿Estás seguro de que deseas eliminar este cliente?")) {
                         window.location.href = "EliminarCliente.php?id=" + idCliente;
@@ -447,8 +415,7 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                 });
             });
 
-            // Limpiar formulario al agregar nuevo cliente
-            document.getElementById("addClientBtn").addEventListener("click", function() {
+            document.getElementById("addClientBtn").addEventListener("click", function () {
                 clearForm();
                 document.getElementById("cliente-form").action = "RegistrarCliente.php";
             });
@@ -466,13 +433,9 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
                 document.getElementById("cliente-FechaNacimiento").value = "";
                 document.getElementById("cliente-Telefono").value = "";
                 document.getElementById("cliente-Dni").value = "";
-                document.getElementById("cliente-Departamento").value = "";
-                document.getElementById("cliente-Provincia").value = "";
-                document.getElementById("cliente-Distrito").value = "";
                 document.getElementById("cliente-Direccion").value = "";
             }
 
-            // Validación en tiempo real
             function validateInput(input, regex, errorMsg) {
                 const value = input.value;
                 const errorSpan = document.getElementById(`error${input.id}`);
@@ -486,81 +449,66 @@ $rsClientes = mysqli_query($conexion, $sqlClientes);
             }
 
             const validations = [{
-                    id: "cliente-IdUsuario",
-                    regex: /^\d+$/,
-                    errorMsg: "ID Usuario inválido (solo números)"
-                },
-                {
-                    id: "cliente-NombreUsuario",
-                    regex: /^[a-zA-Z0-9]+$/,
-                    errorMsg: "Nombre de usuario inválido"
-                },
-                {
-                    id: "cliente-CorreoElectronico",
-                    regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    errorMsg: "Correo electrónico inválido"
-                },
-                {
-                    id: "cliente-Contrasena",
-                    regex: /^.{6,}$/,
-                    errorMsg: "Contraseña inválida (mínimo 6 caracteres)"
-                },
-                {
-                    id: "cliente-IdRol",
-                    regex: /^\d+$/,
-                    errorMsg: "ID Rol inválido (solo números)"
-                },
-                {
-                    id: "cliente-Nombre",
-                    regex: /^[a-zA-Z\s]+$/,
-                    errorMsg: "Nombre inválido (solo letras y espacios)"
-                },
-                {
-                    id: "cliente-Apellido",
-                    regex: /^[a-zA-Z\s]+$/,
-                    errorMsg: "Apellido inválido (solo letras y espacios)"
-                },
-                {
-                    id: "cliente-Sexo",
-                    regex: /^(male|female)$/,
-                    errorMsg: "Sexo inválido (solo 'male' o 'female')"
-                },
-                {
-                    id: "cliente-Telefono",
-                    regex: /^\d+$/,
-                    errorMsg: "Teléfono inválido (solo números)"
-                },
-                {
-                    id: "cliente-Dni",
-                    regex: /^\d+$/,
-                    errorMsg: "DNI inválido (solo números)"
-                },
-                {
-                    id: "cliente-Departamento",
-                    regex: /^[a-zA-Z\s]+$/,
-                    errorMsg: "Departamento inválido (solo letras y espacios)"
-                },
-                {
-                    id: "cliente-Provincia",
-                    regex: /^[a-zA-Z\s]+$/,
-                    errorMsg: "Provincia inválida (solo letras y espacios)"
-                },
-                {
-                    id: "cliente-Distrito",
-                    regex: /^[a-zA-Z\s]+$/,
-                    errorMsg: "Distrito inválido (solo letras y espacios)"
-                },
-                {
-                    id: "cliente-Direccion",
-                    regex: /^[a-zA-Z0-9\s]+$/,
-                    errorMsg: "Dirección inválida (letras, números y espacios)"
-                }
+                id: "cliente-IdUsuario",
+                regex: /^\d+$/,
+                errorMsg: "ID Usuario inválido (solo números)"
+            },
+            {
+                id: "cliente-NombreUsuario",
+                regex: /^[a-zA-Z0-9]+$/,
+                errorMsg: "Nombre de usuario inválido"
+            },
+            {
+                id: "cliente-CorreoElectronico",
+                regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                errorMsg: "Correo electrónico inválido"
+            },
+            {
+                id: "cliente-Contrasena",
+                regex: /^.{6,}$/,
+                errorMsg: "Contraseña inválida (mínimo 6 caracteres)"
+            },
+            {
+                id: "cliente-IdRol",
+                regex: /^\d+$/,
+                errorMsg: "ID Rol inválido (solo números)"
+            },
+            {
+                id: "cliente-Nombre",
+                regex: /^[a-zA-Z\s]+$/,
+                errorMsg: "Nombre inválido (solo letras y espacios)"
+            },
+            {
+                id: "cliente-Apellido",
+                regex: /^[a-zA-Z\s]+$/,
+                errorMsg: "Apellido inválido (solo letras y espacios)"
+            },
+            {
+                id: "cliente-Sexo",
+                regex: /^(male|female)$/,
+                errorMsg: "Sexo inválido (solo 'male' o 'female')"
+            },
+            {
+                id: "cliente-Telefono",
+                regex: /^\d+$/,
+                errorMsg: "Teléfono inválido (solo números)"
+            },
+            {
+                id: "cliente-Dni",
+                regex: /^\d+$/,
+                errorMsg: "DNI inválido (solo números)"
+            },
+            {
+                id: "cliente-Direccion",
+                regex: /^[a-zA-Z0-9\s]+$/,
+                errorMsg: "Dirección inválida (letras, números y espacios)"
+            }
             ];
 
             validations.forEach(validation => {
                 const inputElement = document.getElementById(validation.id);
                 if (inputElement) {
-                    inputElement.addEventListener("input", function() {
+                    inputElement.addEventListener("input", function () {
                         validateInput(this, validation.regex, validation.errorMsg);
                     });
                 }

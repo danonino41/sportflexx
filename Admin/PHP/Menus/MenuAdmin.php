@@ -307,34 +307,6 @@ function obtenerMenusPorRol($idRol, $conexion) {
                             }
                         }
                     });
-
-                    const clientesChart = new Chart(document.getElementById('clientesChart'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: clientesLabels,
-                            datasets: [{
-                                data: clientesData,
-                                backgroundColor: ['#007bff', '#dc3545'],
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                title: {
-                                    display: true,
-                                    text: 'Clientes por Sexo'
-                                },
-                                tooltip: {
-                                    callbacks: {
-                                        label: function(tooltipItem) {
-                                            return tooltipItem.label + ': ' + tooltipItem.raw;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);

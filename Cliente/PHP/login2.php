@@ -65,7 +65,7 @@ if (isset($_SESSION['mensaje'])) {
                 <button name="btnRegistrar">Registrarse</button>
             </form>
         </div>
-
+        
         <div class="form-container sign-in">
             <form method="POST" action="../../Admin/PHP/Menus/ControladorUsuario.php">
                 <h1>Iniciar sesión</h1>
@@ -103,5 +103,9 @@ if (isset($_SESSION['mensaje'])) {
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <?php
+    $hashedPassword = password_hash('NuevaContraseña', PASSWORD_DEFAULT);
+
+    ?>
 </body>
 </html>

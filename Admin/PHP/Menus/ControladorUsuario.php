@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnLogin'])) {
                 exit();
             }
 
-            // Verificar las credenciales
-            if (password_verify($Contrasena, $user['Contrasena'])) {
+            // Verificar las credenciales sin hash
+            if ($Contrasena == $user['Contrasena']) {  // Comparar en texto plano
                 $IdRol = $user['IdRol'];
                 $IdUsuario = $user['IdUsuario'];
 
@@ -56,25 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnLogin'])) {
                 $stmt->bind_param("s", $Usuario);
                 $stmt->execute();
 
-                // Añadir la limpieza del carrito de compras antes de redirigir al usuario
-                echo "
-                    <script>
-                        // Limpiar el carrito de localStorage cuando el usuario inicia sesión correctamente
-                        localStorage.removeItem('cart');
-                    </script>
-                ";
-
                 // Redirigir según el rol del usuario
                 if ($IdRol == 1) {
-                    // Redirigir a la página de administrador
-                    echo "<script>window.location.href = '../../../Admin/PHP/Menus/MenuAdmin.php';</script>";
+                    // Usuario con rol de administrador
+                    header("Location: ../../../Admin/PHP/Menus/MenuAdmin.php");  // Redirige a la página principal del admin
                     exit();
                 } else if ($IdRol == 2) {
-                    // Redirigir a la página del cliente
-                    echo "<script>window.location.href = '../../../Cliente/HTML/MenuPrincipalCliente.php';</script>";
+                    // Usuario con rol de cliente
+                    header("Location: ../../../Cliente/HTML/MenuPrincipalCliente.php");
                     exit();
                 } else {
-                    $_SESSION['mensaje'] = 'Rol desconocido';
+                    $_SESSION['mensaje'] = 'Rol desconocido.';
                     header("Location: ../../../Cliente/PHP/login2.php");
                     exit();
                 }
