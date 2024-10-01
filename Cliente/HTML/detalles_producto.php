@@ -1,8 +1,6 @@
 <?php
-// Iniciar sesión
 session_start();
 
-// Conexión a la base de datos
 $conexion = new mysqli('localhost', 'root', '', 'sportflexx');
 
 if ($conexion->connect_error) {
@@ -15,7 +13,6 @@ $variantes = [];
 if (isset($_GET['id'])) {
     $producto_id = $_GET['id'];
     
-    // Consulta para obtener los detalles del producto
     $sql = "SELECT p.Nombre, p.Descripcion, p.PrecioUnitario, p.ImagenProducto 
             FROM producto p 
             WHERE p.IdProducto = ?";
@@ -28,7 +25,6 @@ if (isset($_GET['id'])) {
     if ($resultado->num_rows > 0) {
         $producto = $resultado->fetch_assoc();
         
-        // Consulta para obtener las variantes del producto (si tiene tallas)
         $sql_variantes = "SELECT Talla, Stock FROM producto_variantes WHERE IdProducto = ?";
         $stmt_variantes = $conexion->prepare($sql_variantes);
         $stmt_variantes->bind_param('i', $producto_id);
@@ -115,50 +111,10 @@ if (isset($_GET['id'])) {
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-        <a href="MenuPrincipalCliente.php" class="navbar-brand text-info fw-semibold fs-4">SPORTFLEXX</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <section class="offcanvas offcanvas-start" id="menuLateral" tabindex="-1">
-            <div class="offcanvas-header">
-                <h1 class="canvas-title text-info TituiloMenu ms-5">SPORTFLEXX</h1>
-                <button class="btn-close" type="button" aria-label="close" data-bs-dismiss="offcanvas"></button>
-            </div>
-            <div class="offcanvas-body d-flex flex-column justify-content-between px-0 Presentacion">
-                <ul class="navbar-nav my-2 justify-content-evenly">
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="hombreCliente.php" class="nav-link">HOMBRE</a>
-                    </li>
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="mujerCliente.php" class="nav-link">MUJER</a>
-                    </li>
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="accesoriosCliente.php" class="nav-link">ACCESORIOS</a>
-                    </li>
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="novedades.php" class="nav-link">NOVEDADES</a>
-                    </li>
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="carritoCliente.html" class="nav-link"><i class="bi bi-cart"></i></a>
-                    </li>
-                    <li class="nav-item dropdown p-3 py-md-1">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="MiPerfil.php"><i class="fas fa-cog"></i> Perfil</a>
-                            <a class="dropdown-item" href="Logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </section>
-    </div>
-</nav>
+<?php include_once "navbar.php"; ?>
 
 <div class="container">
     <div class="row">
-        <!-- Imagen del Producto -->
         <div class="col-md-6">
             <?php if ($producto): ?>
                 <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto['ImagenProducto']; ?>" class="img-fluid product-img" alt="<?php echo $producto['Nombre']; ?>">
@@ -167,13 +123,11 @@ if (isset($_GET['id'])) {
             <?php endif; ?>
         </div>
         
-        <!-- Detalles del Producto -->
         <div class="col-md-6 product-details">
             <?php if ($producto): ?>
                 <h3><?php echo $producto['Nombre']; ?></h3>
                 <p class="price">S/ <?php echo $producto['PrecioUnitario']; ?></p>
 
-                <!-- Selección de Talla (solo si hay variantes con tallas) -->
                 <?php if (!empty($variantes)): ?>
                     <div class="tallas">
                         <h5>TALLA</h5>
@@ -184,22 +138,14 @@ if (isset($_GET['id'])) {
                     </div>
                 <?php endif; ?>
 
-                <!-- Botón de añadir al carrito -->
-                <form method="POST" action="agregar_carrito.php">
-                    <button type="submit" class="btn btn-primary btn-lg mt-4 w-100">AÑADIR AL CARRITO</button>
-                </form>
-
-                <!-- Garantía -->
                 <div class="guarantee">
                     <i class="fas fa-check-circle"></i> 10 días de garantía.
                 </div>
 
-                <!-- Envío -->
                 <div class="shipping">
                     <i class="fas fa-shipping-fast"></i> Envío gratis al comprar 2 o más productos.
                 </div>
 
-                <!-- Acordeón para detalles adicionales -->
                 <div class="accordion" id="productDetailsAccordion">
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingOne">
@@ -233,60 +179,8 @@ if (isset($_GET['id'])) {
     </div>
 </div>
 
-<footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4 col-sm-6">
-          <div class="single-box">
-            <h2>AYUDA</h2>
-            <ul>
-              <li><a href="preguntasFrecuentes.html">Preguntas frecuentes</a></li>
-              <li><a href="informacionEntrega.html">Informacion de entrega</a></li>
-              <li><a href="politicaDevolucion.html">Politica de devolucion</a></li>
-              <li><a href="HacerDevolucion.html">Hacer una devolucion</a></li>
-              <li><a href="pedidos.html">Pedidios</a></li> 
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6"> 
-          <div class="single-box">
-            <h2>PAGINAS</h2>
-            <ul>
-              <li><a href="QuienesSomos.html">Quienes somos</a></li>
-              <li><a href="declaracionAccesibilidad.html">Declaracion de accesibilidad</a></li>
-              <li><a href="#">Sostenibilidad</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <div class="single-box">
-            <h3>UNETE A LA FAMILIA SPORTFLEXX</h3>
-            <p>
-              Reciba actualizaciones al instante, acceda a ofertas exclusivas,
-              detalles de lanzamiento de productos y mas.
-            </p>
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Ingresa tu correo.." aria-label="Enter your Email ..." aria-describedby="basic-addon2" />
-              <span class="input-group-text" id="basic-addon2"><i class="fa fa-long-arrow-right"></i></span>
-            </div>
-            <h2>Síguenos en</h2>
-            <p class="socials">
-              <a href="https://www.facebook.com/"><i class="fa fa-facebook"></i></a>
-              <a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a>
-              <a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
-              <a href="https://twitter.com/"><i class="fa fa-twitter"></i></a>
-            </p>
-            <div class="card-area">
-              <i class="fa fa-cc-visa"></i>
-              <i class="fa fa-credit-card"></i>
-              <i class="fa fa-cc-mastercard"></i>
-              <i class="fa fa-cc-paypal"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-</footer>
+<?php include_once "footer.php"; ?>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

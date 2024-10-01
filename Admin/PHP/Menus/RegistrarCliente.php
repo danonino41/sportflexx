@@ -2,33 +2,37 @@
 require_once(__DIR__ . "/../coneccion/conector.php");
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Validar y limpiar los datos de entrada aquí
-
-    // Datos del usuario
-    $nombreUsuario = $_POST['NombreUsuario'] ?? '';
-    $correoElectronico = $_POST['CorreoElectronico'] ?? '';
-    $contrasena = $_POST['Contrasena'] ?? ''; 
+    // Validar y limpiar los datos de entrada
+    $nombreUsuario = trim($_POST['NombreUsuario'] ?? '');
+    $correoElectronico = filter_var($_POST['CorreoElectronico'] ?? '', FILTER_SANITIZE_EMAIL);
+    $contrasena = trim($_POST['Contrasena'] ?? ''); 
     $idRol = intval($_POST['IdRol'] ?? 0);
 
-    // Datos del cliente
-    $nombre = $_POST['Nombre'] ?? '';
-    $apellido = $_POST['Apellido'] ?? '';
-    $sexo = $_POST['Sexo'] ?? '';
-    $fechaNacimiento = $_POST['FechaNacimiento'] ?? '';
-    $telefono = $_POST['Telefono'] ?? '';
-    $dni = intval($_POST['Dni'] ?? 1);
+    $nombre = trim($_POST['Nombre'] ?? '');
+    $apellido = trim($_POST['Apellido'] ?? '');
+    $sexo = trim($_POST['Sexo'] ?? '');
+    $fechaNacimiento = trim($_POST['FechaNacimiento'] ?? '');
+    $telefono = trim($_POST['Telefono'] ?? '');
+    $dni = !empty($_POST['Dni']) ? intval($_POST['Dni']) : null;
 
-    // Datos de la dirección
-    $departamento = $_POST['Departamento'] ?? '';
-    $provincia = $_POST['Provincia'] ?? '';
-    $distrito = $_POST['Distrito'] ?? '';
-    $direccion = $_POST['Direccion'] ?? '';
+    $direccion = trim($_POST['Direccion'] ?? '');
+
+    // Validaciones básicas
+    if (empty($nombreUsuario) || empty($correoElectronico) || empty($contrasena) || empty($nombre) || empty($direccion)) {
+        echo "Por favor, completa todos los campos requeridos.";
+        exit();
+    }
+
+    if (!filter_var($correoElectronico, FILTER_VALIDATE_EMAIL)) {
+        echo "Correo electrónico no válido.";
+        exit();
+    }
 
     $obj = new Conectar();
     $conexion = $obj->getConexion();
 
     try {
-        // Iniciar una transacción
+        // Iniciar la transacción
         $conexion->begin_transaction();
 
         // Codificación de la contraseña
@@ -39,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmtUsuario = $conexion->prepare($sqlUsuario);
         $stmtUsuario->bind_param("sssi", $nombreUsuario, $correoElectronico, $contrasenaCodificada, $idRol);
         $stmtUsuario->execute();
-        $idUsuario = $conexion->insert_id;
+        $idUsuario = $conexion->insert_id;  // Obtenemos el IdUsuario autoincremental generado
         $stmtUsuario->close();
 
         // Insertar nuevo cliente
@@ -51,15 +55,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmtCliente->close();
 
         // Insertar nueva dirección
-        $sqlDireccion = "INSERT INTO direccion (IdCliente, Departamento, Provincia, Distrito, Direccion) VALUES (?, ?, ?, ?, ?)";
+        $sqlDireccion = "INSERT INTO direccion (IdCliente, Direccion) VALUES (?, ?)";
         $stmtDireccion = $conexion->prepare($sqlDireccion);
-        $stmtDireccion->bind_param("issss", $idCliente, $departamento, $provincia, $distrito, $direccion);
+        $stmtDireccion->bind_param("is", $idCliente, $direccion);
         $stmtDireccion->execute();
         $stmtDireccion->close();
 
         // Confirmar la transacción
         $conexion->commit();
         $obj->closeConexion();
+
+        // Redirigir a la página de clientes después de un registro exitoso
         header("Location: clientes.php");
         exit();
     } catch (Exception $e) {

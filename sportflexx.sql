@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-09-2024 a las 04:33:58
+-- Tiempo de generación: 01-10-2024 a las 22:43:18
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sportflexx`
 --
-CREATE DATABASE IF NOT EXISTS `sportflexx` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `sportflexx`;
 
 -- --------------------------------------------------------
 
@@ -43,7 +41,7 @@ INSERT INTO `categoria` (`IdCategoria`, `Nombre`, `Descripcion`) VALUES
 (1, 'HOMBRE', 'Ropa para hombre'),
 (2, 'MUJER', 'Ropa para mujer'),
 (3, 'ACCESORIOS', 'Accesorios de moda'),
-(4, 'NOVEDADES', 'Ediciones Limitadas');
+(4, 'NOVEDADES', 'EDICIONES LIMITADAS');
 
 -- --------------------------------------------------------
 
@@ -67,11 +65,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`IdCliente`, `IdUsuario`, `Nombre`, `Apellido`, `Sexo`, `FechaNacimiento`, `Telefono`, `Dni`) VALUES
-(6, 10, 'gerson', 'vegaaa', 'male', '2020-12-21', '904931932', '48545254184'),
-(10, 14, 'Danito', 'Pablito', 'male', '2024-09-13', '96325871', '78419863'),
-(11, 15, 'Pana', 'Miguel', 'male', '2024-08-27', '741852963', '78965412'),
-(15, 19, 'Danito', 'Chocoflan', 'male', '2005-07-16', '924484038', '71526042'),
-(16, 21, 'Daniel', 'Wang', 'male', '2024-08-28', '904931932', '78965412');
+(1, 1, 'Danito', 'Chocoflan', 'male', '2005-06-10', '904931932', '78965412'),
+(2, 2, 'Daniel', 'Wang', 'male', '2024-08-27', '924484038', '78965412'),
+(3, 7, 'Sapnap', 'dasdsad', 'male', '2024-09-18', '904931932', '48545254184'),
+(4, 8, 'Daniel', 'Wang', 'male', '2024-09-24', '924484038', '78965412');
 
 -- --------------------------------------------------------
 
@@ -120,24 +117,29 @@ CREATE TABLE `detallepedido` (
 CREATE TABLE `direccion` (
   `IdDireccion` int(11) NOT NULL,
   `IdCliente` int(11) NOT NULL,
-  `Departamento` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Provincia` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Distrito` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Direccion` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `Direccion` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `direccion`
 --
 
-INSERT INTO `direccion` (`IdDireccion`, `IdCliente`, `Departamento`, `Provincia`, `Distrito`, `Direccion`) VALUES
-(9, 6, 'Lima', 'asdasdas', 'asd', 'asdasd'),
-(14, 10, 'Moquegua', 'Lima', 'Lima', 'Lima'),
-(15, 11, 'Lima', 'Lima', 'Lima', 'Lima'),
-(19, 10, 'Moquegua', 'Lima', 'Lima', 'Lima'),
-(20, 6, 'Lima', 'asdasdas', 'Lima', 'asdasd'),
-(21, 15, 'Lima', 'Lima', 'Lima', 'where'),
-(22, 16, 'Lima', 'Lima', 'asd', 'asdasd');
+INSERT INTO `direccion` (`IdDireccion`, `IdCliente`, `Direccion`) VALUES
+(9, 6, 'Av 28 DE AGOSTO 369'),
+(14, 10, 'Lima'),
+(15, 11, 'Lima'),
+(19, 10, 'Lima'),
+(20, 6, 'Av 28 DE AGOSTO 369'),
+(21, 15, 'AV 28 DE JULIO 317'),
+(22, 16, 'AV PERUANIDAD 3369'),
+(23, 23, 'Av 28 DE AGOSTO 369'),
+(24, 24, 'AV 28 DE JULIO 317'),
+(25, 25, 'AV 28 DE JULIO 317'),
+(26, 1, 'AV 28 DE JULIO 317'),
+(27, 2, 'AV PERUANIDAD 3369'),
+(28, 3, 'where'),
+(29, 3, 'AV 28 DE JULIO 317'),
+(30, 4, 'where');
 
 -- --------------------------------------------------------
 
@@ -162,8 +164,7 @@ INSERT INTO `menu` (`IdMenu`, `Nombre`, `Ruta`) VALUES
 (4, 'MujerCliente', 'mujerCliente.php'),
 (5, 'AccesoriosClientes', 'accesoriosClientes.php'),
 (6, 'Novedades', 'novedades.php'),
-(7, 'MiPerfil', 'MiPerfil.php'),
-(8, 'CarritoCompras', 'CarritoCompras.html');
+(7, 'MiPerfil', 'MiPerfil.php');
 
 -- --------------------------------------------------------
 
@@ -188,20 +189,40 @@ CREATE TABLE `opinionproducto` (
 
 CREATE TABLE `pedido` (
   `IdPedido` int(11) NOT NULL,
-  `IdCliente` int(11) NOT NULL,
+  `IdCliente` int(11) DEFAULT NULL,
   `NumeroPedido` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Estado` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `FechaPedido` date NOT NULL DEFAULT curdate(),
   `FechaEntrega` date DEFAULT NULL,
-  `IdCuponDescuento` int(11) DEFAULT NULL
+  `IdCuponDescuento` int(11) DEFAULT NULL,
+  `SessionId` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `pedido`
 --
 
-INSERT INTO `pedido` (`IdPedido`, `IdCliente`, `NumeroPedido`, `Estado`, `FechaPedido`, `FechaEntrega`, `IdCuponDescuento`) VALUES
-(7, 6, '12', 'Pendiente', '2024-07-01', '2024-08-10', 1);
+INSERT INTO `pedido` (`IdPedido`, `IdCliente`, `NumeroPedido`, `Estado`, `FechaPedido`, `FechaEntrega`, `IdCuponDescuento`, `SessionId`) VALUES
+(1, 11, '4853', 'Completado', '2024-06-03', '2024-01-12', 2, NULL),
+(2, 11, '4972', 'Completado', '2024-01-22', '2024-02-29', 3, '728235'),
+(3, 3, '3778', 'Completado', '2024-05-08', '2024-05-14', 1, '631172'),
+(4, 3, '3137', 'Pendiente', '2024-02-06', '2024-04-29', 2, '881252'),
+(5, 13, '5959', 'Completado', '2024-04-24', '2024-01-25', 1, '466283'),
+(6, 12, '3921', 'Pendiente', '2024-07-15', '2024-08-03', 0, '948516'),
+(7, 6, '12', 'Pendiente', '2024-07-01', '2024-08-10', 1, NULL),
+(8, 17, '1739', 'Cancelado', '2024-08-20', '2024-05-13', 4, '654982'),
+(9, 2, '9842', 'Pendiente', '2024-02-17', '2024-03-11', 3, NULL),
+(10, 5, '2948', 'Pendiente', '2024-01-25', '2024-07-05', 1, '774331'),
+(11, 8, '8193', 'Completado', '2024-08-01', '2024-04-17', 2, '632981'),
+(12, 16, '9874', 'Pendiente', '2024-04-12', '2024-05-03', 5, '438275'),
+(13, 9, '3827', 'Completado', '2024-01-18', '2024-01-29', 1, NULL),
+(14, 1, '8367', 'Cancelado', '2024-06-24', '2024-02-20', 3, '781249'),
+(15, 20, '1283', 'Pendiente', '2024-07-31', '2024-03-27', 0, '983572'),
+(16, 4, '7832', 'Completado', '2024-05-16', '2024-07-09', 4, NULL),
+(17, 19, '8234', 'Cancelado', '2024-02-11', '2024-08-04', 2, '649731'),
+(18, 14, '7625', 'Pendiente', '2024-03-02', '2024-01-18', 3, '514287'),
+(19, 7, '9328', 'Completado', '2024-07-09', '2024-02-22', 0, '857324'),
+(20, 18, '5327', 'Pendiente', '2024-08-19', '2024-04-09', 4, '294867');
 
 -- --------------------------------------------------------
 
@@ -251,7 +272,14 @@ INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `P
 (123, 'Pantalones Deportivos Sueltos', 'Pantalones deportivos sueltos, ideales para entrenamientos o uso casual.', 2, 54.99, '2024-09-20', 'F', 'flaca6.jpg'),
 (124, 'Conjunto Beige Casual', 'Conjunto casual beige, perfecto para el uso diario o actividades ligeras.', 2, 69.99, '2024-09-20', 'F', 'flaca7.png'),
 (125, 'Conjunto Deportivo Beige', 'Conjunto deportivo beige con un diseño moderno y cómodo.', 2, 64.99, '2024-09-20', 'F', 'flaca8.png'),
-(126, 'Conjunto Deportivo Blanco', 'Conjunto deportivo blanco, perfecto para actividades físicas o relajación.', 2, 59.99, '2024-09-20', 'F', 'flaca9.png');
+(126, 'Conjunto Deportivo Blanco', 'Conjunto deportivo blanco, perfecto para actividades físicas o relajación.', 2, 59.99, '2024-09-20', 'F', 'flaca9.png'),
+(127, 'Ejemplo4', 'sdfghjkl', 1, 230.00, '2024-09-26', '0', 'image9.png'),
+(128, 'Ejemploo963', 'asdasdsad', 3, 63.00, '2024-09-26', '0', 'mochila negra Xr.png'),
+(129, 'Ejemplo964 (1) (1)', 'ASDFGHJKLQWERTYUIASDFGHM', 3, 963.00, '2024-09-03', '0', 'bolso negro.png'),
+(130, 'Conjunto Deportivo', '[Oferta Especial] Conjunto Deportivo de Secado Rápido para Hombre - 2 piezas, Camiseta de Seda Helada & Shorts para Correr, Fitness & Entrenamiento de Baloncesto, Ropa Deportiva de Verano.', 1, 120.00, '2024-10-01', 'M', 'oferta2.png'),
+(131, 'Camiseta Clásica de Fernando Alonso en Renault', 'Camiseta Clásica de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'M', 'imagen1.png'),
+(132, 'Camiseta Retro de Fernando Alonso en Renault', 'Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', '0', 'Captura de pantalla 2024-10-01 152651.png'),
+(133, 'Pantalón Corto de Fernando Alonso en Renault', 'Pantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault', 4, 65.00, '2024-09-30', '0', '66fc5ea1ef3b0.png');
 
 -- --------------------------------------------------------
 
@@ -262,9 +290,9 @@ INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `P
 CREATE TABLE `producto_variantes` (
   `IdVariante` int(11) NOT NULL,
   `IdProducto` int(11) NOT NULL,
-  `Talla` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Color` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `Stock` int(11) NOT NULL
+  `Talla` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Color` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `Stock` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -272,7 +300,13 @@ CREATE TABLE `producto_variantes` (
 --
 
 INSERT INTO `producto_variantes` (`IdVariante`, `IdProducto`, `Talla`, `Color`, `Stock`) VALUES
-(1, 100, 'M', 'Negro', 10);
+(1, 109, 'M', 'Negro', 10),
+(37, 128, 'S', 'Gris', 20),
+(38, 129, '', 'Negro', 36),
+(39, 130, 'L', 'Negro', 10),
+(40, 131, 'L', 'Celeste', 5),
+(41, 132, 'M', 'Celeste', 5),
+(42, 133, 'M', 'Celeste', 15);
 
 -- --------------------------------------------------------
 
@@ -353,9 +387,10 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`IdUsuario`, `NombreUsuario`, `CorreoElectronico`, `Contrasena`, `IdRol`, `Intentos`, `Bloqueado`) VALUES
-(10, 'gerson1', 'dasda@adasd', '$2y$10$.r2IY42tx1cuomeDlBDsp..Jhv2/DP2LBfufjEFYcRc8ga3eMzW8C', 1, 0, b'1'),
-(19, 'dan41', 'trolazo@gmail.com', '$2y$10$9kyLbWoiVl5SclI1Jwim/Oq61MAETlG.98EJN3gam8NjG2CwGomMO', 2, 3, b'0'),
-(21, 'danonino', 'Trolazo@gmail.com', '$2y$10$mZQTE35h5TO0YsMgo79VtenxBmeXmZGM7n2f11BQS2cWz35WRvEQ2', 1, 3, b'0');
+(1, 'dan41', 'Trolazo@gmail.com', '$2y$10$bVWY9FrrshU39YecU.sQcOF5yyeYC.W8ehL.mLcACm7VljpqLl/X6', 2, 3, b'0'),
+(2, 'danonino', 'asdasda@gmail.com', '$2y$10$4jz1Xmw2lQFblDXe3NQXp.IliCChOrg7Icr5ynf89Hf4V4Fb8051y', 1, 3, b'0'),
+(7, 'pana1', 'Trolazo@gmail.com', '$2y$10$ntwSrbNG7Q0OgSa8rTJUX.zLTbddHplIM07msXOJNQznvAeQUIz6S', 2, 3, b'0'),
+(8, 'admin', 'Trolazo@gmail.com', '$2y$10$2oDDI9yj5yTfGEPCKLHTje8kyY3wiglT8skmow/U3OYuEiF0vzlzu', 1, 3, b'0');
 
 -- --------------------------------------------------------
 
@@ -498,13 +533,13 @@ ALTER TABLE `venta`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `IdCategoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `IdCliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `cupondescuento`
@@ -522,7 +557,7 @@ ALTER TABLE `detallepedido`
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `IdDireccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `IdDireccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `menu`
@@ -534,13 +569,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_variantes`
 --
 ALTER TABLE `producto_variantes`
-  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -564,7 +599,7 @@ ALTER TABLE `tipopago`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `IdUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`

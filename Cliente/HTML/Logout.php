@@ -1,6 +1,5 @@
 <?php
 session_start();
-// Destruir todas las sesiones
 session_destroy();
 ?>
 
@@ -20,7 +19,6 @@ session_destroy();
         </div>
     </div>
     <script>
-        // Redirigir a la página de inicio de sesión después de 3 segundos
         setTimeout(() => {
             window.location.href = "../PHP/login2.php";
         }, 1000);

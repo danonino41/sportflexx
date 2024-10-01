@@ -5,7 +5,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Crear una instancia de la clase Conectar y obtener la conexión
 $conectar = new Conectar();
 $conexion = $conectar->getConexion();
 
@@ -18,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnLogin'])) {
         $Usuario = $_POST["NombreUsuario"];
         $Contrasena = $_POST["Contrasena"];
 
-        // Comprobar si el usuario está bloqueado y obtener sus intentos
         $stmt = $conexion->prepare("SELECT Bloqueado, Intentos, Contrasena, IdRol, IdUsuario FROM usuario WHERE NombreUsuario = ?");
         $stmt->bind_param("s", $Usuario);
         $stmt->execute();
@@ -42,27 +40,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnLogin'])) {
                 exit();
             }
 
-            // Verificar las credenciales sin hash
-            if ($Contrasena == $user['Contrasena']) {  // Comparar en texto plano
+            if (password_verify($Contrasena, $user['Contrasena'])) { 
                 $IdRol = $user['IdRol'];
                 $IdUsuario = $user['IdUsuario'];
 
-                // Establecer la sesión del usuario
                 $_SESSION['IdUsuario'] = $IdUsuario;
                 $_SESSION['idRol'] = $IdRol;
 
-                // Reiniciar los intentos fallidos
                 $stmt = $conexion->prepare("UPDATE usuario SET Intentos = 3 WHERE NombreUsuario = ?");
                 $stmt->bind_param("s", $Usuario);
                 $stmt->execute();
 
-                // Redirigir según el rol del usuario
                 if ($IdRol == 1) {
-                    // Usuario con rol de administrador
-                    header("Location: ../../../Admin/PHP/Menus/MenuAdmin.php");  // Redirige a la página principal del admin
+                    header("Location: ../../../Admin/PHP/Menus/MenuAdmin.php"); 
                     exit();
                 } else if ($IdRol == 2) {
-                    // Usuario con rol de cliente
                     header("Location: ../../../Cliente/HTML/MenuPrincipalCliente.php");
                     exit();
                 } else {
@@ -71,12 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnLogin'])) {
                     exit();
                 }
             } else {
-                // Decrementar el contador de intentos fallidos
                 $stmt = $conexion->prepare("UPDATE usuario SET Intentos = Intentos - 1 WHERE NombreUsuario = ?");
                 $stmt->bind_param("s", $Usuario);
                 $stmt->execute();
 
-                // Obtener el número de intentos restantes después de la actualización
                 $stmt = $conexion->prepare("SELECT Intentos FROM usuario WHERE NombreUsuario = ?");
                 $stmt->bind_param("s", $Usuario);
                 $stmt->execute();

@@ -3,6 +3,7 @@
     .navbar{
           font-family: 'Roboto', sans-serif;
         }
+
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -28,11 +29,9 @@
                         <a href="accesoriosCliente.php" class="nav-link">ACCESORIOS</a>
                     </li>
                     <li class="nav-item p-3 py-md-1">
-                        <a href="novedades.php" class="nav-link">NOVEDADES</a>
+                        <a href="novedadesCliente.php" class="nav-link">NOVEDADES</a>
                     </li>
-                    <li class="nav-item p-3 py-md-1">
-                        <a href="carritoCliente.html" class="nav-link"><i class="bi bi-cart"></i></a>
-                    </li>
+
                     <li class="nav-item dropdown p-3 py-md-1">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">

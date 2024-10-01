@@ -34,14 +34,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Actualizar los datos del usuario
         if (!empty($contrasena)) {
-            // Si se proporciona una nueva contraseña, se actualiza sin hashear
+            // Si se proporciona una nueva contraseña, se hashea y se actualiza
+            $hashedPassword = password_hash($contrasena, PASSWORD_DEFAULT);
             $sqlUsuario = "UPDATE usuario SET NombreUsuario = ?, CorreoElectronico = ?, Contrasena = ?, IdRol = ? WHERE IdUsuario = ?";
             $stmtUsuario = $conexion->prepare($sqlUsuario);
-            $stmtUsuario->bind_param("sssii", $nombreUsuario, $correoElectronico, $contrasena, $idRol, $idUsuario);
+            $stmtUsuario->bind_param("sssii", $nombreUsuario, $correoElectronico, $hashedPassword, $idRol, $idUsuario);
         } else {
             // Si no se proporciona una nueva contraseña, no actualizarla
             $sqlUsuario = "UPDATE usuario SET NombreUsuario = ?, CorreoElectronico = ?, IdRol = ? WHERE IdUsuario = ?";
-            $stmtUsuario->prepare($sqlUsuario);
+            $stmtUsuario = $conexion->prepare($sqlUsuario);
             $stmtUsuario->bind_param("ssii", $nombreUsuario, $correoElectronico, $idRol, $idUsuario);
         }
         $stmtUsuario->execute();
