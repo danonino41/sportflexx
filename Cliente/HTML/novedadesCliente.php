@@ -44,7 +44,7 @@ function mostrarProductoNovedades($conexion) {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SPORTFLEXX</title>
+  <title>NOVEDADES</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../EstilosMenus/EstilosMenu.css" />
@@ -56,6 +56,13 @@ function mostrarProductoNovedades($conexion) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
 <style>
+  .navbar-custom{
+    background: #FFD200 ;
+  }
+  footer{
+    background: #FFD200 ;
+  }
+
   .centered-text p {
     font-size: 1.2rem;
     line-height: 1.8;
@@ -123,6 +130,7 @@ function mostrarProductoNovedades($conexion) {
   .centered-text p {
     font-size: 1.2rem;
     line-height: 1.8;
+    text-align: justify;
   }
 
   .conteiner {
@@ -153,11 +161,14 @@ function mostrarProductoNovedades($conexion) {
     text-align: justify;
   }
 
+  .hola{
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+  }
+
   img {
     width: 350px;
     height: auto;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   }
 
   /* Asegura que sea responsivo en pantallas más pequeñas */
@@ -226,11 +237,11 @@ function mostrarProductoNovedades($conexion) {
   </div>
 
   <div class="conteiner mt-5">
-    <h1 class="text-center hola">SOBRE ÉL</h1>
+    <h1 class="text-center">SOBRE ÉL</h1>
     <div class="row align-items-center mt-4">
       <div class="col-md-6">
         <img src="https://cdn-5.latimages.com/images/mgl/O1OkA/s4/open-uri20120928-4766-1yhlnzs.jpg"
-          class="img-fluid rounded" alt="Daniel Ricciardo">
+          class="img-fluid rounded hola" alt="Fernando Alonso">
       </div>
       <div class="col-md-6">
         <h2 class="driver-name">Fernando Alonso</h2>

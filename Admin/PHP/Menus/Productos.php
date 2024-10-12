@@ -2,12 +2,26 @@
 require_once(__DIR__ . "/../coneccion/conector.php");
 
 $obj = new Conectar();
-$sql = "SELECT p.IdProducto, p.Nombre, p.Descripcion, p.PrecioUnitario, p.FechaRegistro, p.Genero, p.ImagenProducto, 
-               v.Talla, v.Color, v.Stock, c.Nombre as CategoriaNombre
+$searchTerm = '';
+
+if (isset($_GET['search'])) {
+    $searchTerm = $_GET['search'];  // Obtén el término de búsqueda del formulario
+}
+
+$sql = "SELECT p.IdProducto, p.Nombre, p.Descripcion, p.PrecioUnitario, p.FechaRegistro, p.ImagenProducto, c.Nombre as CategoriaNombre
         FROM producto p
-        JOIN producto_variantes v ON p.IdProducto = v.IdProducto
         JOIN categoria c ON p.IdCategoria = c.IdCategoria";
-$rsMed = mysqli_query($obj->getConexion(), $sql);
+
+if (!empty($searchTerm)) {
+    $sql .= " WHERE p.Nombre LIKE ?";  // Filtra por nombre de producto
+    $stmt = $obj->getConexion()->prepare($sql);
+    $searchTerm = '%' . $searchTerm . '%';  // Permite búsqueda parcial
+    $stmt->bind_param("s", $searchTerm);
+    $stmt->execute();
+    $rsMed = $stmt->get_result();
+} else {
+    $rsMed = mysqli_query($obj->getConexion(), $sql);
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +44,19 @@ include_once "navbar_admin.php";
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Productos</h1>
+            
+            <!-- Formulario de búsqueda -->
+            <form method="GET" action="Productos.php" class="mb-3">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Buscar por nombre" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+                    <button class="btn btn-primary" type="submit">Buscar</button>
+                </div>
+            </form>
+
             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalProducto"
                 onclick="clearForm()">Nuevo Producto</button>
 
-            <!-- Modal for Add/Edit Form -->
+            <!-- Modal para Añadir/Editar Producto -->
             <div id="modalProducto" class="modal fade" tabindex="-1" aria-labelledby="modalProductoLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -56,24 +79,6 @@ include_once "navbar_admin.php";
                                     <textarea id="product-description" name="Descripcion" class="form-control" required></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="product-size">Talla</label>
-                                    <select class="form-select" id="product-size" name="Talla">
-                                        <option selected value="">N/A</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="product-color">Color</label>
-                                    <input type="text" id="product-color" name="Color" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="product-stock">Stock:</label>
-                                    <input type="number" id="product-stock" name="Stock" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="product-category">Categoría:</label>
                                     <select id="product-category" name="IdCategoria" class="form-control" required>
                                         <option value="">[Seleccione Categoria]</option>
@@ -93,14 +98,6 @@ include_once "navbar_admin.php";
                                 <div class="mb-3">
                                     <label for="product-date">Fecha de Registro</label>
                                     <input type="date" id="product-date" name="FechaRegistro" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="product-gender">Género</label>
-                                    <select class="form-select" id="product-gender" name="Genero" required>
-                                        <option value=""></option>
-                                        <option value="M">M</option>
-                                        <option value="F">F</option>
-                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="product-images">Imágenes:</label>
@@ -126,13 +123,9 @@ include_once "navbar_admin.php";
                                     <th>IdProducto</th>
                                     <th>Nombre</th>
                                     <th>Descripción</th>
-                                    <th>Talla</th>
-                                    <th>Color</th>
-                                    <th>Stock</th>
                                     <th>Categoria</th>
                                     <th>Precio</th>
                                     <th>FechaRegistro</th>
-                                    <th>Género</th>
                                     <th>Imagen</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -143,13 +136,9 @@ include_once "navbar_admin.php";
                                     <td><?php echo $registro["IdProducto"]; ?></td>
                                     <td><?php echo $registro["Nombre"]; ?></td>
                                     <td><?php echo $registro["Descripcion"]; ?></td>
-                                    <td><?php echo $registro["Talla"]; ?></td>
-                                    <td><?php echo $registro["Color"]; ?></td>
-                                    <td><?php echo $registro["Stock"]; ?></td>
                                     <td><?php echo $registro["CategoriaNombre"]; ?></td>
                                     <td><?php echo $registro["PrecioUnitario"]; ?></td>
                                     <td><?php echo $registro["FechaRegistro"]; ?></td>
-                                    <td><?php echo $registro["Genero"]; ?></td>
                                     <td><?php echo basename($registro["ImagenProducto"]); ?></td>
                                     <td>
                                         <button class="btn btn-primary btn-sm edit-btn"
@@ -193,13 +182,10 @@ include_once "footer_Admin.php";
                 document.getElementById("IdProducto").value = row.cells[0].innerText;
                 document.getElementById("product-name").value = row.cells[1].innerText;
                 document.getElementById("product-description").value = row.cells[2].innerText;
-                document.getElementById("product-size").value = row.cells[3].innerText;
-                document.getElementById("product-color").value = row.cells[4].innerText;
-                document.getElementById("product-stock").value = row.cells[5].innerText;
-                document.getElementById("product-category").value = row.cells[6].innerText;
-                document.getElementById("product-price").value = row.cells[7].innerText;
-                document.getElementById("product-date").value = row.cells[8].innerText;
-                document.getElementById("product-gender").value = row.cells[9].innerText;
+                document.getElementById("product-category").value = row.cells[3].innerText;
+                document.getElementById("product-price").value = row.cells[4].innerText;
+                document.getElementById("product-date").value = row.cells[5].innerText;
+                document.getElementById("product-images").value = row.cells[6].innerText; // Aquí se mantiene la imagen
             });
         });
 
@@ -218,13 +204,9 @@ include_once "footer_Admin.php";
             document.getElementById("IdProducto").value = "0";
             document.getElementById("product-name").value = "";
             document.getElementById("product-description").value = "";
-            document.getElementById("product-size").value = "";
-            document.getElementById("product-color").value = "";
-            document.getElementById("product-stock").value = "";
             document.getElementById("product-category").value = "";
             document.getElementById("product-price").value = "";
             document.getElementById("product-date").value = "";
-            document.getElementById("product-gender").value = "";
             document.getElementById("product-images").value = "";
         }
     });

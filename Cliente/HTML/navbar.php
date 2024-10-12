@@ -1,12 +1,11 @@
-
 <style>
-    .navbar{
-          font-family: 'Roboto', sans-serif;
-        }
-
+    .navbar {
+        font-family: 'Roboto', sans-serif;
+        z-index: 1030;
+    }
 </style>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<body>
+<nav class="navbar navbar-expand-lg sticky-top navbar-custom">
     <div class="container-fluid">
         <a href="MenuPrincipalCliente.php" class="navbar-brand text-info fw-semibold fs-4">SPORTFLEXX</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
@@ -33,7 +32,9 @@
                     </li>
 
                     <li class="nav-item dropdown p-3 py-md-1">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user fa-fw"></i>
+                        </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="MiPerfil.php"><i class="fas fa-cog"></i> Perfil</a>
                             <a class="dropdown-item" href="Logout.php"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>

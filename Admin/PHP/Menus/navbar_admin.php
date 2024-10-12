@@ -91,7 +91,7 @@ footer.custom-footer {
 
 /* Barra lateral de navegación */
 .sb-sidenav {
-    background-color: #fbd6cd; /* Fondo oscuro */
+    background-color: grey; /* Fondo oscuro */
 }
 
 .sb-sidenav .nav-link {
@@ -177,6 +177,10 @@ footer.custom-footer {
                                     <a class="nav-link" href="Productos.php">
                                         <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                                         Productos
+                                    </a>
+                                    <a class="nav-link" href="Productos_variantes.php">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                                        Productos Variantes
                                     </a>
                                     <a class="nav-link" href="Categoria.php">
                                         <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>

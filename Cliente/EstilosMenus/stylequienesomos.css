@@ -2,18 +2,16 @@
     text-decoration: none;
 }
 
-/* Aplica list-style: none solo a los elementos de lista */
 ul, li {
     list-style: none;
 }
 
 .nosotros {
-    padding-bottom: 75px;
-    padding-top: 75px;
+padding: 75px;
 }
 
 .nosotros img {
-    height: 650px;
+    height: 450px;
 }
 .imagen {
     align-content: center;

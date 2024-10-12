@@ -56,6 +56,21 @@ function mostrarProductos($categoriaId, $conexion) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
+<style>
+  .navbar-custom {
+  background-color: #A3D5FF;
+  }
+
+  body {
+    background-color: #F0F8FF;
+  }
+
+  footer {
+    background-color: #81C1FF;
+    color: #000000;
+  }
+  
+</style>
 <body>
   <div class="container-fluid p-0">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
@@ -66,18 +81,16 @@ function mostrarProductos($categoriaId, $conexion) {
       <div class="carousel-inner">
         <div class="carousel-item active">
           <video class="video-fluid w-100" autoplay loop muted>
-            <source src="../ImagenMenu/LOOK_5_-_Web_Banner_-_April_Key_Looks_-_16x9.mp4" type="video/mp4">
+            <source src="../ImagenMenu/SPORTFLEXX.mp4" type="video/mp4">
           </video>
           <div class="carousel-caption d-none d-md-block">
             <h2 class="text-warning fw-bold">Bienvenido a Sportflexx</h2>
-            <button scr="novedades.php" type="button" class="btn btn-warning btn-lg mt-3 text-white">Novedades</button>
           </div>
         </div>
         <div class="carousel-item">
-          <img src="../ImagenMenu/image.png" class="d-block w-100" alt="Nature with sea">
+          <img src="../ImagenMenu/SPORTFLEXX.png" class="d-block w-100" alt="Nature with sea">
           <div class="carousel-caption d-none d-md-block">
             <h2 class="text-warning fw-bold">Bienvenido a Sportflexx</h2>
-            <button scr="novedades.php" type="button" class="btn btn-warning btn-lg mt-3 text-white">Novedades</button>
           </div>
         </div>
       </div>
@@ -128,7 +141,6 @@ function mostrarProductos($categoriaId, $conexion) {
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
 
 </body>
 </html>

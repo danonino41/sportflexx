@@ -1,3 +1,4 @@
+
 <footer>
     <div class="container">
       <div class="row">
@@ -5,11 +6,9 @@
           <div class="single-box">
             <h2>AYUDA</h2>
             <ul>
-              <li><a href="preguntasFrecuentes.html">Preguntas frecuentes</a></li>
-              <li><a href="informacionEntrega.html">Informacion de entrega</a></li>
-              <li><a href="politicaDevolucion.html">Politica de devolucion</a></li>
-              <li><a href="HacerDevolucion.html">Hacer una devolucion</a></li>
-              <li><a href="pedidos.html">Pedidios</a></li> 
+              <li><a href="preguntasFrecuentes.php">Preguntas frecuentes</a></li>
+              <li><a href="informacionEntrega.php">Informacion de entrega</a></li>
+              <li><a href="politicaDevolucion.php">Politica de devolucion</a></li>
             </ul>
           </div>
         </div>
@@ -17,9 +16,9 @@
           <div class="single-box">
             <h2>PAGINAS</h2>
             <ul>
-              <li><a href="QuienesSomos.html">Quienes somos</a></li>
-              <li><a href="declaracionAccesibilidad.html">Declaracion de accesibilidad</a></li>
-              <li><a href="#">Sostenibilidad</a></li>
+              <li><a href="QuienesSomos.php">Quienes somos</a></li>
+              <li><a href="declaracionAccesibilidad.php">Declaracion de accesibilidad</a></li>
+              <!--<li><a href="Sostenibilidad.php">Sostenibilidad</a></li>-->
             </ul>
           </div>
         </div>
@@ -50,6 +49,14 @@
           </div>
         </div>
       </div>
-    </div>
+  </div>
   </footer>
+  <!--CHAT EN VIVO TIDIO
+  <script src="//code.tidio.co/wcj8zzu70stazyfxkokdcekhiau9gzxy.js" async></script>-->
+  <!-- chatbot stack.ia 
+  <script
+    src="https://unpkg.com/react-stackai@latest/dist/vanilla/vanilla-stackai.js"
+    data-project-url="https://www.stack-ai.com/embed/7edeee3a-e795-4c79-806a-af791ded4d92/6db7ff1f-f081-4d56-961d-b77fbca4b514/6709a16941dfb72246982f3f">
+  </script>-->
+
   

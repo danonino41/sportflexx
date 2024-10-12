@@ -12,25 +12,25 @@ $variantes = [];
 
 if (isset($_GET['id'])) {
     $producto_id = $_GET['id'];
-    
+
     $sql = "SELECT p.Nombre, p.Descripcion, p.PrecioUnitario, p.ImagenProducto 
             FROM producto p 
             WHERE p.IdProducto = ?";
-    
+
     $stmt = $conexion->prepare($sql);
     $stmt->bind_param('i', $producto_id);
     $stmt->execute();
     $resultado = $stmt->get_result();
-    
+
     if ($resultado->num_rows > 0) {
         $producto = $resultado->fetch_assoc();
-        
+
         $sql_variantes = "SELECT Talla, Stock FROM producto_variantes WHERE IdProducto = ?";
         $stmt_variantes = $conexion->prepare($sql_variantes);
         $stmt_variantes->bind_param('i', $producto_id);
         $stmt_variantes->execute();
         $resultado_variantes = $stmt_variantes->get_result();
-        
+
         while ($row = $resultado_variantes->fetch_assoc()) {
             $variantes[] = $row;
         }
@@ -39,12 +39,11 @@ if (isset($_GET['id'])) {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detalles del Producto</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
@@ -58,6 +57,12 @@ if (isset($_GET['id'])) {
   <style>
     body {
         font-family: Arial, sans-serif;
+    }
+    .navbar-custom{
+        background-color: orange;
+    }
+    footer{
+        background-color: orange;
     }
     .container {
         margin-top: 50px;
@@ -117,7 +122,7 @@ if (isset($_GET['id'])) {
     <div class="row">
         <div class="col-md-6">
             <?php if ($producto): ?>
-                <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto['ImagenProducto']; ?>" class="img-fluid product-img" alt="<?php echo $producto['Nombre']; ?>">
+                <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto['ImagenProducto']; ?>" class="img-fluid product-img" alt="<?php echo htmlspecialchars($producto['Nombre']); ?>">
             <?php else: ?>
                 <p>No hay imagen disponible</p>
             <?php endif; ?>
@@ -125,17 +130,20 @@ if (isset($_GET['id'])) {
         
         <div class="col-md-6 product-details">
             <?php if ($producto): ?>
-                <h3><?php echo $producto['Nombre']; ?></h3>
-                <p class="price">S/ <?php echo $producto['PrecioUnitario']; ?></p>
+                <h3><?php echo htmlspecialchars($producto['Nombre']); ?></h3>
+                <p class="price">S/ <?php echo number_format($producto['PrecioUnitario'], 2); ?></p>
 
                 <?php if (!empty($variantes)): ?>
-                    <div class="tallas">
+                    <div class="tallas mb-3">
                         <h5>TALLA</h5>
                         <?php foreach ($variantes as $variante): ?>
-                            <input type="radio" name="talla" id="talla-<?php echo $variante['Talla']; ?>" value="<?php echo $variante['Talla']; ?>" required>
-                            <label for="talla-<?php echo $variante['Talla']; ?>"><?php echo $variante['Talla']; ?></label>
+                            <input type="radio" name="talla" id="talla-<?php echo htmlspecialchars($variante['Talla']); ?>" value="<?php echo htmlspecialchars($variante['Talla']); ?>" required>
+                            <label for="talla-<?php echo htmlspecialchars($variante['Talla']); ?>"><?php echo htmlspecialchars($variante['Talla']); ?></label>
                         <?php endforeach; ?>
                     </div>
+                    
+                    <h5>STOCK</h5>
+                    <p id="stock-info">Seleccione una talla para ver el stock</p>
                 <?php endif; ?>
 
                 <div class="guarantee">
@@ -155,7 +163,7 @@ if (isset($_GET['id'])) {
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show">
                             <div class="accordion-body">
-                                <?php echo $producto['Descripcion']; ?>
+                                <?php echo nl2br(htmlspecialchars($producto['Descripcion'])); ?>
                             </div>
                         </div>
                     </div>
@@ -181,7 +189,33 @@ if (isset($_GET['id'])) {
 
 <?php include_once "footer.php"; ?>
 
+<div class="modal fade" id="sizeGuideModal" tabindex="-1" aria-labelledby="sizeGuideModalLabel" aria-hidden="true">
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function actualizarStock() {
+        var idProducto = <?php echo $producto_id; ?>;
+        var tallaSeleccionada = document.querySelector('input[name="talla"]:checked').value;
+
+        if (idProducto && tallaSeleccionada) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../../Admin/PHP/Menus/ObtenerStock.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById("stock-info").textContent = xhr.responseText;
+                }
+            };
+            xhr.send("IdProducto=" + idProducto + "&Talla=" + tallaSeleccionada);
+        }
+    }
+
+    document.querySelectorAll('input[name="talla"]').forEach(function(radio) {
+        radio.addEventListener('change', actualizarStock);
+    });
+</script>
+
 </body>
 </html>

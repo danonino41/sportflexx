@@ -43,7 +43,7 @@ function mostrarProductosHombre($conexion) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hombre</title>
+    <title>HOMBRES</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../EstilosMenus/EstilosMenu.css" />
@@ -54,6 +54,21 @@ function mostrarProductosHombre($conexion) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
+<style>
+    .navbar {
+    background-color: #B2F2BB;
+    }
+
+    body {
+    background-color: #E6F9EA;
+    }
+
+    footer {
+    background-color: #99E2B4;
+    color: #000000;
+    }
+    
+</style>
 <body>
 <div class="container mt-5">
     <h3 class="text-left my-2">HOMBRE</h3>
