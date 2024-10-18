@@ -18,4 +18,5 @@ include_once "footer_Admin.php";
     }
     footer {
         background: #2E86C1;
+        size: 325dvh;
     }

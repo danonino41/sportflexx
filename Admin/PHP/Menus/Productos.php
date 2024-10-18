@@ -42,7 +42,7 @@ include_once "navbar_admin.php";
 ?>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-4" style="padding-bottom: 55px">
             <h1 class="mt-4">Productos</h1>
             
             <!-- Formulario de búsqueda -->

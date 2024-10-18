@@ -28,7 +28,7 @@ include_once "navbar_admin.php";
 ?>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-4" style="padding-bottom: 55px">
             <h1 class="mt-4">Variantes de Productos</h1>
             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalVariante"
                 onclick="clearForm()">Nueva Variante</button>
@@ -138,13 +138,12 @@ include_once "footer_Admin.php";
 <script src="../js/datatables-simple-demo.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // Handle edit button click
         const editButtons = document.querySelectorAll(".edit-btn");
         editButtons.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
                 document.getElementById("IdVariante").value = row.cells[0].innerText;
-                document.getElementById("variant-product").value = row.cells[0].innerText;  // Using ID instead of name
+                document.getElementById("variant-product").value = row.cells[0].innerText;
                 document.getElementById("variant-size").value = row.cells[2].innerText;
                 document.getElementById("variant-stock").value = row.cells[3].innerText;
             });

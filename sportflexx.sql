@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-10-2024 a las 22:43:18
+-- Tiempo de generación: 18-10-2024 a las 19:37:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sportflexx`
 --
+CREATE DATABASE IF NOT EXISTS `sportflexx` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `sportflexx`;
 
 -- --------------------------------------------------------
 
@@ -66,7 +68,7 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`IdCliente`, `IdUsuario`, `Nombre`, `Apellido`, `Sexo`, `FechaNacimiento`, `Telefono`, `Dni`) VALUES
 (1, 1, 'Danito', 'Chocoflan', 'male', '2005-06-10', '904931932', '78965412'),
-(2, 2, 'Daniel', 'Wang', 'male', '2024-08-27', '924484038', '78965412'),
+(2, 2, 'Daniel', 'Gonzales', 'male', '2024-08-27', '924484038', '78965412'),
 (3, 7, 'Sapnap', 'dasdsad', 'male', '2024-09-18', '904931932', '48545254184'),
 (4, 8, 'Daniel', 'Wang', 'male', '2024-09-24', '924484038', '78965412');
 
@@ -237,7 +239,6 @@ CREATE TABLE `producto` (
   `IdCategoria` int(11) NOT NULL,
   `PrecioUnitario` decimal(10,2) NOT NULL,
   `FechaRegistro` date NOT NULL DEFAULT curdate(),
-  `Genero` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `ImagenProducto` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -245,41 +246,37 @@ CREATE TABLE `producto` (
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `PrecioUnitario`, `FechaRegistro`, `Genero`, `ImagenProducto`) VALUES
-(100, 'Bolso Verde', 'Bolso verde moderno y cómodo', 3, 29.99, '2024-09-20', 'U', 'bolso verde.png'),
-(101, 'Bolso Blanco', 'Bolso blanco elegante para todo tipo de uso', 3, 32.99, '2024-09-20', 'U', 'bolso blanco.png'),
-(102, 'Bolso Negro', 'Bolso negro espacioso y versátil', 3, 28.99, '2024-09-20', 'U', 'bolso negro.png'),
-(103, 'Mochila Negra', 'Mochila negra ideal para actividades diarias', 3, 49.99, '2024-09-20', 'U', 'mochila negra.png'),
-(104, 'Mochila Blanca', 'Mochila blanca con diseño minimalista', 3, 54.99, '2024-09-20', 'U', 'mochila blanca.png'),
-(105, 'Mochila Negra Xr', 'Mochila negra XR con más capacidad de almacenamiento', 3, 59.99, '2024-09-20', 'U', 'mochila negra Xr.png'),
-(106, 'Mochila Tennis', 'Mochila diseñada especialmente para equipos de tennis', 3, 69.99, '2024-09-20', 'U', 'Mochila Tennis.png'),
-(107, 'Mochilón Negro', 'Mochilón negro con múltiples compartimientos', 3, 89.99, '2024-09-20', 'U', 'mochilon negro.png'),
-(108, 'Tomatodo', 'Botella de agua Tomatodo resistente para actividades deportivas', 3, 19.99, '2024-09-20', 'U', 'tomatodo.png'),
-(109, 'Camiseta Negra Manga Corta', 'Camiseta deportiva negra de manga corta, ideal para entrenamientos intensos.', 1, 89.90, '2024-09-20', 'M', 'Camiseta Negra Manga Corta.png'),
-(110, 'Camiseta Blanca sin Mangas', 'Camiseta blanca sin mangas para mayor libertad de movimiento.', 1, 74.90, '2024-09-20', 'M', 'image2.png'),
-(111, 'Camiseta Verde Oliva', 'Camiseta ajustada verde oliva, perfecta para entrenamiento en el gimnasio.', 1, 85.00, '2024-09-20', 'M', 'image3.png'),
-(112, 'Conjunto Deportivo Azul', 'Conjunto deportivo azul con sudadera y pantalones, ideal para entrenamiento o uso diario.', 1, 179.90, '2024-09-20', 'M', 'image4.png'),
-(113, 'Pantalones Deportivos Grises', 'Pantalones deportivos grises para mayor comodidad durante el ejercicio.', 1, 120.00, '2024-09-20', 'M', 'image5.png'),
-(114, 'Camiseta Gris Claro Ajustada', 'Camiseta ajustada de color gris claro, diseñada para acentuar la musculatura.', 1, 119.90, '2024-09-20', 'M', 'image6.png'),
-(115, 'Camiseta Negra Entrenamiento', 'Camiseta negra de entrenamiento, ideal para sesiones de fuerza.', 1, 89.90, '2024-09-20', 'M', 'image7.png'),
-(116, 'Camiseta Azul Marino', 'Camiseta ajustada de color azul marino para entrenamiento funcional.', 1, 85.00, '2024-09-20', 'M', 'image8.png'),
-(117, 'Camiseta Gris Oversized', 'Camiseta gris de estilo oversized para un look relajado y moderno.', 1, 65.90, '2024-09-20', 'M', 'image9.png'),
-(118, 'Top Deportivo Blanco', 'Top deportivo blanco, ideal para sesiones de entrenamiento intensas.', 2, 39.99, '2024-09-20', 'F', 'flaca1.png'),
-(119, 'Conjunto Deportivo Negro', 'Conjunto deportivo negro de manga larga y pantalones, perfecto para yoga o correr.', 2, 59.99, '2024-09-20', 'F', 'flaca2.png'),
-(120, 'Sudadera Negra', 'Sudadera negra ajustada para mantener el estilo durante el entrenamiento.', 2, 49.99, '2024-09-20', 'F', 'flaca3.png'),
-(121, 'Pantalones Deportivos Negros', 'Pantalones deportivos negros con ajuste cómodo y flexible.', 2, 45.99, '2024-09-20', 'F', 'flaca4.jpg'),
-(122, 'Top Deportivo Negro', 'Top deportivo negro, diseñado para ofrecer soporte y comodidad.', 2, 34.99, '2024-09-20', 'F', 'flaca5.jpg'),
-(123, 'Pantalones Deportivos Sueltos', 'Pantalones deportivos sueltos, ideales para entrenamientos o uso casual.', 2, 54.99, '2024-09-20', 'F', 'flaca6.jpg'),
-(124, 'Conjunto Beige Casual', 'Conjunto casual beige, perfecto para el uso diario o actividades ligeras.', 2, 69.99, '2024-09-20', 'F', 'flaca7.png'),
-(125, 'Conjunto Deportivo Beige', 'Conjunto deportivo beige con un diseño moderno y cómodo.', 2, 64.99, '2024-09-20', 'F', 'flaca8.png'),
-(126, 'Conjunto Deportivo Blanco', 'Conjunto deportivo blanco, perfecto para actividades físicas o relajación.', 2, 59.99, '2024-09-20', 'F', 'flaca9.png'),
-(127, 'Ejemplo4', 'sdfghjkl', 1, 230.00, '2024-09-26', '0', 'image9.png'),
-(128, 'Ejemploo963', 'asdasdsad', 3, 63.00, '2024-09-26', '0', 'mochila negra Xr.png'),
-(129, 'Ejemplo964 (1) (1)', 'ASDFGHJKLQWERTYUIASDFGHM', 3, 963.00, '2024-09-03', '0', 'bolso negro.png'),
-(130, 'Conjunto Deportivo', '[Oferta Especial] Conjunto Deportivo de Secado Rápido para Hombre - 2 piezas, Camiseta de Seda Helada & Shorts para Correr, Fitness & Entrenamiento de Baloncesto, Ropa Deportiva de Verano.', 1, 120.00, '2024-10-01', 'M', 'oferta2.png'),
-(131, 'Camiseta Clásica de Fernando Alonso en Renault', 'Camiseta Clásica de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'M', 'imagen1.png'),
-(132, 'Camiseta Retro de Fernando Alonso en Renault', 'Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', '0', 'Captura de pantalla 2024-10-01 152651.png'),
-(133, 'Pantalón Corto de Fernando Alonso en Renault', 'Pantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault', 4, 65.00, '2024-09-30', '0', '66fc5ea1ef3b0.png');
+INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `PrecioUnitario`, `FechaRegistro`, `ImagenProducto`) VALUES
+(100, 'Bolso Verde', 'Bolso verde moderno y cómodo', 3, 29.99, '2024-09-20', 'bolso verde.png'),
+(101, 'Bolso Blanco', 'Bolso blanco elegante para todo tipo de uso', 3, 32.99, '2024-09-20', 'bolso blanco.png'),
+(102, 'Bolso Negro', 'Bolso negro espacioso y versátil', 3, 28.99, '2024-09-20', 'bolso negro.png'),
+(103, 'Mochila Negra', 'Mochila negra ideal para actividades diarias', 3, 49.99, '2024-09-20', 'mochila negra.png'),
+(104, 'Mochila Blanca', 'Mochila blanca con diseño minimalista', 3, 54.99, '2024-09-20', 'mochila blanca.png'),
+(105, 'Mochila Negra Xr', 'Mochila negra XR con más capacidad de almacenamiento', 3, 59.99, '2024-09-20', 'mochila negra Xr.png'),
+(106, 'Mochila Tennis', 'Mochila diseñada especialmente para equipos de tennis', 3, 69.99, '2024-09-20', 'Mochila Tennis.png'),
+(107, 'Mochilón Negro', 'Mochilón negro con múltiples compartimientos', 3, 89.99, '2024-09-20', 'mochilon negro.png'),
+(108, 'Tomatodo', 'Botella de agua Tomatodo resistente para actividades deportivas', 3, 19.99, '2024-09-20', 'tomatodo.png'),
+(109, 'Camiseta Negra Manga Corta', 'Camiseta deportiva negra de manga corta, ideal para entrenamientos intensos.', 1, 89.90, '2024-09-20', 'Camiseta Negra Manga Corta.png'),
+(110, 'Camiseta Blanca sin Mangas', 'Camiseta blanca sin mangas para mayor libertad de movimiento.', 1, 74.90, '2024-09-20', 'image2.png'),
+(111, 'Camiseta Verde Oliva', 'Camiseta ajustada verde oliva, perfecta para entrenamiento en el gimnasio.', 1, 85.00, '2024-09-20', 'image3.png'),
+(112, 'Conjunto Deportivo Azul', 'Conjunto deportivo azul con sudadera y pantalones, ideal para entrenamiento o uso diario.', 1, 179.90, '2024-09-20', 'image4.png'),
+(113, 'Pantalones Deportivos Grises', 'Pantalones deportivos grises para mayor comodidad durante el ejercicio.', 1, 120.00, '2024-09-20', 'image5.png'),
+(114, 'Camiseta Gris Claro Ajustada', 'Camiseta ajustada de color gris claro, diseñada para acentuar la musculatura.', 1, 119.90, '2024-09-20', 'image6.png'),
+(115, 'Camiseta Negra Entrenamiento', 'Camiseta negra de entrenamiento, ideal para sesiones de fuerza.', 1, 89.90, '2024-09-20', 'image7.png'),
+(116, 'Camiseta Azul Marino', 'Camiseta ajustada de color azul marino para entrenamiento funcional.', 1, 85.00, '2024-09-20', 'image8.png'),
+(117, 'Camiseta Gris Oversized', 'Camiseta gris de estilo oversized para un look relajado y moderno.', 1, 65.90, '2024-09-20', 'image9.png'),
+(118, 'Top Deportivo Blanco', 'Top deportivo blanco, ideal para sesiones de entrenamiento intensas.', 2, 39.99, '2024-09-20', 'flaca1.png'),
+(119, 'Conjunto Deportivo Negro', 'Conjunto deportivo negro de manga larga y pantalones, perfecto para yoga o correr.', 2, 59.99, '2024-09-20', 'flaca2.png'),
+(120, 'Sudadera Negra', 'Sudadera negra ajustada para mantener el estilo durante el entrenamiento.', 2, 49.99, '2024-09-20', 'flaca3.png'),
+(121, 'Pantalones Deportivos Negros', 'Pantalones deportivos negros con ajuste cómodo y flexible.', 2, 45.99, '2024-09-20', 'flaca4.jpg'),
+(122, 'Top Deportivo Negro', 'Top deportivo negro, diseñado para ofrecer soporte y comodidad.', 2, 34.99, '2024-09-20', 'flaca5.jpg'),
+(123, 'Pantalones Deportivos Sueltos', 'Pantalones deportivos sueltos, ideales para entrenamientos o uso casual.', 2, 54.99, '2024-09-20', 'flaca6.jpg'),
+(124, 'Conjunto Beige Casual', 'Conjunto casual beige, perfecto para el uso diario o actividades ligeras.', 2, 69.99, '2024-09-20', 'flaca7.png'),
+(125, 'Conjunto Deportivo Beige', 'Conjunto deportivo beige con un diseño moderno y cómodo.', 2, 64.99, '2024-09-20', 'flaca8.png'),
+(126, 'Conjunto Deportivo Blanco', 'Conjunto deportivo blanco, perfecto para actividades físicas o relajación.', 2, 59.99, '2024-09-20', 'flaca9.png'),
+(131, 'Camiseta Clásica de Fernando Alonso en Renault', 'Camiseta Clásica de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'imagen1.png'),
+(132, 'Camiseta Retro de Fernando Alonso en Renault', 'Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'Captura de pantalla 2024-10-01 152651.png'),
+(133, 'Pantalón Corto de Fernando Alonso en Renault', 'Pantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault', 4, 65.00, '2024-09-30', '66fc5ea1ef3b0.png');
 
 -- --------------------------------------------------------
 
@@ -300,13 +297,14 @@ CREATE TABLE `producto_variantes` (
 --
 
 INSERT INTO `producto_variantes` (`IdVariante`, `IdProducto`, `Talla`, `Color`, `Stock`) VALUES
-(1, 109, 'M', 'Negro', 10),
-(37, 128, 'S', 'Gris', 20),
-(38, 129, '', 'Negro', 36),
-(39, 130, 'L', 'Negro', 10),
-(40, 131, 'L', 'Celeste', 5),
-(41, 132, 'M', 'Celeste', 5),
-(42, 133, 'M', 'Celeste', 15);
+(1, 109, 'M', 'Negro', 25),
+(37, 126, 'S', 'Gris', 20),
+(38, 126, 'M', 'Negro', 36),
+(40, 131, 'L', 'Celeste', 35),
+(41, 132, 'M', 'Celeste', 30),
+(42, 133, 'M', 'Celeste', 25),
+(45, 109, 'XL', NULL, 34),
+(48, 109, 'S', NULL, 20);
 
 -- --------------------------------------------------------
 
@@ -350,25 +348,6 @@ INSERT INTO `rolmenu` (`IdRolMenu`, `IdRol`, `IdMenu`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `tipopago`
---
-
-CREATE TABLE `tipopago` (
-  `IdTipoPago` int(11) NOT NULL,
-  `Tipo` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `tipopago`
---
-
-INSERT INTO `tipopago` (`IdTipoPago`, `Tipo`) VALUES
-(1, 'Tarjeta de Crédito'),
-(2, 'Efectivo');
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `usuario`
 --
 
@@ -388,7 +367,7 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`IdUsuario`, `NombreUsuario`, `CorreoElectronico`, `Contrasena`, `IdRol`, `Intentos`, `Bloqueado`) VALUES
 (1, 'dan41', 'Trolazo@gmail.com', '$2y$10$bVWY9FrrshU39YecU.sQcOF5yyeYC.W8ehL.mLcACm7VljpqLl/X6', 2, 3, b'0'),
-(2, 'danonino', 'asdasda@gmail.com', '$2y$10$4jz1Xmw2lQFblDXe3NQXp.IliCChOrg7Icr5ynf89Hf4V4Fb8051y', 1, 3, b'0'),
+(2, 'danonino', 'trollll@gmail.com', '$2y$10$4jz1Xmw2lQFblDXe3NQXp.IliCChOrg7Icr5ynf89Hf4V4Fb8051y', 1, 3, b'0'),
 (7, 'pana1', 'Trolazo@gmail.com', '$2y$10$ntwSrbNG7Q0OgSa8rTJUX.zLTbddHplIM07msXOJNQznvAeQUIz6S', 2, 3, b'0'),
 (8, 'admin', 'Trolazo@gmail.com', '$2y$10$2oDDI9yj5yTfGEPCKLHTje8kyY3wiglT8skmow/U3OYuEiF0vzlzu', 1, 3, b'0');
 
@@ -505,12 +484,6 @@ ALTER TABLE `rolmenu`
   ADD KEY `IdMenu` (`IdMenu`);
 
 --
--- Indices de la tabla `tipopago`
---
-ALTER TABLE `tipopago`
-  ADD PRIMARY KEY (`IdTipoPago`);
-
---
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -569,13 +542,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=134;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_variantes`
 --
 ALTER TABLE `producto_variantes`
-  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -588,12 +561,6 @@ ALTER TABLE `rol`
 --
 ALTER TABLE `rolmenu`
   MODIFY `IdRolMenu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT de la tabla `tipopago`
---
-ALTER TABLE `tipopago`
-  MODIFY `IdTipoPago` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -616,7 +583,23 @@ ALTER TABLE `venta`
 --
 ALTER TABLE `detallepedido`
   ADD CONSTRAINT `detallepedido_ibfk_1` FOREIGN KEY (`IdPedido`) REFERENCES `pedido` (`IdPedido`) ON DELETE CASCADE,
-  ADD CONSTRAINT `detallepedido_ibfk_2` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE;
+  ADD CONSTRAINT `detallepedido_ibfk_2` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_detallepedido_pedido` FOREIGN KEY (`IdPedido`) REFERENCES `pedido` (`IdPedido`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_detallepedido_producto` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `opinionproducto`
+--
+ALTER TABLE `opinionproducto`
+  ADD CONSTRAINT `fk_opinionproducto_cliente` FOREIGN KEY (`IdCliente`) REFERENCES `cliente` (`IdCliente`),
+  ADD CONSTRAINT `fk_opinionproducto_producto` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`);
+
+--
+-- Filtros para la tabla `rolmenu`
+--
+ALTER TABLE `rolmenu`
+  ADD CONSTRAINT `rolmenu_ibfk_1` FOREIGN KEY (`IdRol`) REFERENCES `rol` (`IdRol`),
+  ADD CONSTRAINT `rolmenu_ibfk_2` FOREIGN KEY (`IdMenu`) REFERENCES `menu` (`IdMenu`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

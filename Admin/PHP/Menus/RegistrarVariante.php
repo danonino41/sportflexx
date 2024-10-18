@@ -1,26 +1,46 @@
 <?php
 require_once(__DIR__ . "/../coneccion/conector.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $obj = new Conectar();
-    $IdVariante = $_POST["IdVariante"];
-    $IdProducto = $_POST["IdProducto"];
-    $Talla = $_POST["Talla"];
-    $Stock = $_POST["Stock"];
+$obj = new Conectar();
+$conexion = $obj->getConexion();
 
-    if ($IdVariante == 0) {
-        $sqlVariante = "INSERT INTO producto_variantes (IdProducto, Talla, Stock) VALUES (?, ?, ?)";
-        $stmtVariante = $obj->getConexion()->prepare($sqlVariante);
-        $stmtVariante->bind_param("isi", $IdProducto, $Talla, $Stock);
-        $stmtVariante->execute();
+$IdProducto = $_POST['IdProducto'];
+$Talla = $_POST['Talla'];
+$Stock = $_POST['Stock'];
+
+$sql_verificar = "SELECT Stock FROM producto_variantes WHERE IdProducto = ? AND Talla = ?";
+$stmt_verificar = $conexion->prepare($sql_verificar);
+$stmt_verificar->bind_param("is", $IdProducto, $Talla);
+$stmt_verificar->execute();
+$resultado_verificar = $stmt_verificar->get_result();
+
+if ($resultado_verificar->num_rows > 0) {
+    $fila = $resultado_verificar->fetch_assoc();
+    $stock_actual = $fila['Stock'];
+    $nuevo_stock = $stock_actual + $Stock;
+
+    $sql_actualizar = "UPDATE producto_variantes SET Stock = ? WHERE IdProducto = ? AND Talla = ?";
+    $stmt_actualizar = $conexion->prepare($sql_actualizar);
+    $stmt_actualizar->bind_param("iis", $nuevo_stock, $IdProducto, $Talla);
+
+    if ($stmt_actualizar->execute()) {
+        header("Location: Productos_variantes.php");
+        exit();
     } else {
-        $sqlUpdateVariante = "UPDATE producto_variantes SET IdProducto = ?, Talla = ?, Stock = ? WHERE IdVariante = ?";
-        $stmtUpdateVariante = $obj->getConexion()->prepare($sqlUpdateVariante);
-        $stmtUpdateVariante->bind_param("isii", $IdProducto, $Talla, $Stock, $IdVariante);
-        $stmtUpdateVariante->execute();
+        header("Location: Productos_variantes.php");
+        exit();
     }
+} else {
+    $sql_insertar = "INSERT INTO producto_variantes (IdProducto, Talla, Stock) VALUES (?, ?, ?)";
+    $stmt_insertar = $conexion->prepare($sql_insertar);
+    $stmt_insertar->bind_param("isi", $IdProducto, $Talla, $Stock);
 
-    header("Location: Productos_variantes.php");
-    exit();
+    if ($stmt_insertar->execute()) {
+        header("Location: Productos_variantes.php");
+        exit();
+    } else {
+        header("Location: Productos_variantes.php");
+        exit();
+    }
 }
 ?>

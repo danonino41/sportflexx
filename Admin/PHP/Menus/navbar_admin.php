@@ -13,27 +13,25 @@
 }
 
 .table-responsive {
-    max-height: 400px; /* Limita la altura de la tabla para scroll vertical */
-    overflow-y: auto; /* Habilita el scroll vertical */
-    overflow-x: auto; /* Habilita el scroll horizontal */
+    max-height: 400px; 
+    overflow-y: auto;
+    overflow-x: auto; 
     min-width: 100%;
 }
 
-/* Bordes estilo Excel */
 .table-bordered th,
 .table-bordered td {
-    border: 2px solid black; /* Bordes de 2px color negro */
+    border: 2px solid black;
 }
 
 .table-bordered {
-    border-collapse: collapse; /* Asegura que no haya separación entre bordes */
+    border-collapse: collapse;
 }
 
 .table-hover tbody tr:hover {
-    background-color: #f1f1f1; /* Efecto hover en filas */
+    background-color: #f1f1f1;
 }
 
-/* Campos de formularios */
 .form-control,
 .form-select {
     background-color: #333;
@@ -41,30 +39,26 @@
     border: 1px solid #444;
 }
 
-/* Estilos del footer */
 footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #b39fc2; /* Color personalizado del footer */
-    color: #ffffff; /* Texto blanco */
+    background-color: #b39fc2;
+    color: #ffffff;
     padding: 10px 0;
     text-align: center;
 }
 
-/* Footer customizado */
 footer.custom-footer {
-    background-color: #b39fc2; /* Color personalizado para footer */
-    color: #ffffff; /* Texto en blanco */
+    background-color: #b39fc2;
+    color: #ffffff;
 }
 
-/* Navbar customizada */
 .navbar-custom {
-    background-color: #4c5187; /* Azul personalizado para la navbar */
-    color: white; /* Texto blanco en la navbar */
+    background-color: #4c5187;
+    color: white;
 }
 
-/* Botones personalizados */
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
@@ -80,7 +74,6 @@ footer.custom-footer {
     border-color: #1e00ff;
 }
 
-/* Validaciones */
 .is-invalid {
     border-color: #dc3545;
 }
@@ -89,27 +82,26 @@ footer.custom-footer {
     color: #dc3545 !important;
 }
 
-/* Barra lateral de navegación */
 .sb-sidenav {
-    background-color: grey; /* Fondo oscuro */
+    background-color: grey;
 }
 
 .sb-sidenav .nav-link {
-    color: #4c5187 ; /* Texto blanco */
+    color: #4c5187 ; 
 }
 
 .sb-sidenav .nav-link:hover {
-    background-color: #b39fc2; /* Fondo azul en hover */
-    color: #f0f0f0; /* Texto claro en hover */
+    background-color: #b39fc2;
+    color: #f0f0f0;
 }
 
 .sb-sidenav-footer {
-    background-color: #23272a; /* Fondo más oscuro para el footer de la barra lateral */
-    color: #c1c1c1; /* Texto más claro */
+    background-color: #23272a; 
+    color: #c1c1c1; 
 }
 
 .sb-sidenav-footer .small {
-    color: #a1a1a1; /* Color más claro para el texto del footer */
+    color: #a1a1a1;
 }
 
     </style>
