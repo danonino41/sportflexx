@@ -50,14 +50,23 @@
         </div>
       </div>
   </div>
-
-  <div class="chatbot">
-    <?php include_once "chatbot.php"; ?>
-  </div>
-
   </footer>
-  <!--CHAT EN VIVO TIDIO
-  <script src="//code.tidio.co/wcj8zzu70stazyfxkokdcekhiau9gzxy.js" async></script>-->
+  <!--CHAT BOT DE VOICEFLOW-->
+  <script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6712c7a6b2c68d651860c2b8' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+  <!--CHAT EN VIVO TIDIO-->
+  <!--<script src="//code.tidio.co/wcj8zzu70stazyfxkokdcekhiau9gzxy.js" async></script>-->
   <!-- chatbot stack.ia 
   <script
     src="https://unpkg.com/react-stackai@latest/dist/vanilla/vanilla-stackai.js"

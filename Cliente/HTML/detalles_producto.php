@@ -13,7 +13,7 @@ $variantes = [];
 if (isset($_GET['id'])) {
     $producto_id = $_GET['id'];
 
-    $sql = "SELECT p.Nombre, p.Descripcion, p.PrecioUnitario, p.ImagenProducto 
+    $sql = "SELECT p.Nombre, p.Descripcion, p.PrecioUnitario, p.ImagenProducto, p.IdCategoria 
             FROM producto p 
             WHERE p.IdProducto = ?";
 
@@ -25,14 +25,26 @@ if (isset($_GET['id'])) {
     if ($resultado->num_rows > 0) {
         $producto = $resultado->fetch_assoc();
 
-        $sql_variantes = "SELECT Talla, Stock FROM producto_variantes WHERE IdProducto = ?";
-        $stmt_variantes = $conexion->prepare($sql_variantes);
-        $stmt_variantes->bind_param('i', $producto_id);
-        $stmt_variantes->execute();
-        $resultado_variantes = $stmt_variantes->get_result();
+        if ($producto['IdCategoria'] != 3) {
+            $sql_variantes = "SELECT Talla, Stock 
+                              FROM producto_variantes 
+                              WHERE IdProducto = ? 
+                              ORDER BY 
+                              CASE 
+                                  WHEN Talla = 'S' THEN 1
+                                  WHEN Talla = 'M' THEN 2
+                                  WHEN Talla = 'L' THEN 3
+                                  WHEN Talla = 'XL' THEN 4
+                                  ELSE 5
+                              END";
+            $stmt_variantes = $conexion->prepare($sql_variantes);
+            $stmt_variantes->bind_param('i', $producto_id);
+            $stmt_variantes->execute();
+            $resultado_variantes = $stmt_variantes->get_result();
 
-        while ($row = $resultado_variantes->fetch_assoc()) {
-            $variantes[] = $row;
+            while ($row = $resultado_variantes->fetch_assoc()) {
+                $variantes[] = $row;
+            }
         }
     } else {
         echo "No se encontró el producto.";
@@ -46,14 +58,15 @@ if (isset($_GET['id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detalles del Producto</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../EstilosMenus/EstilosMenu.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../EstilosMenus/EstilosMenu.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
+
   <style>
     body {
         font-family: Arial, sans-serif;
@@ -141,9 +154,122 @@ if (isset($_GET['id'])) {
                             <label for="talla-<?php echo htmlspecialchars($variante['Talla']); ?>"><?php echo htmlspecialchars($variante['Talla']); ?></label>
                         <?php endforeach; ?>
                     </div>
-                    
+
                     <h5>STOCK</h5>
                     <p id="stock-info">Seleccione una talla para ver el stock</p>
+
+                    <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#sizeGuideModal">
+                        Ver guía de tallas
+                    </button>
+
+                    <div class="modal fade" id="sizeGuideModal" tabindex="-1" aria-labelledby="sizeGuideModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="sizeGuideModalLabel">Guía de Tallas</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h6>Guía de Tallas para Camisetas</h6>
+                                <table class="table table-bordered mb-4">
+                                    <thead>
+                                        <tr>
+                                            <th>Talla</th>
+                                            <th>Medida del Pecho (cm)</th>
+                                            <th>Medida de la Cintura (cm)</th>
+                                            <th>Medida de Cadera (cm)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>S</td>
+                                            <td>86-90</td>
+                                            <td>66-70</td>
+                                            <td>92-96</td>
+                                        </tr>
+                                        <tr>
+                                            <td>M</td>
+                                            <td>90-94</td>
+                                            <td>70-74</td>
+                                            <td>96-100</td>
+                                        </tr>
+                                        <tr>
+                                            <td>L</td>
+                                            <td>94-98</td>
+                                            <td>74-78</td>
+                                            <td>100-104</td>
+                                        </tr>
+                                        <tr>
+                                            <td>XL</td>
+                                            <td>98-102</td>
+                                            <td>78-82</td>
+                                            <td>104-108</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h6>Guía de Tallas para Shorts y Pantalones</h6>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Talla</th>
+                                            <th>Medida de la Cintura (cm)</th>
+                                            <th>Medida de Cadera (cm)</th>
+                                            <th>Largo de Pierna (cm)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>S</td>
+                                            <td>66-70</td>
+                                            <td>92-96</td>
+                                            <td>70</td>
+                                        </tr>
+                                        <tr>
+                                            <td>M</td>
+                                            <td>70-74</td>
+                                            <td>96-100</td>
+                                            <td>72</td>
+                                        </tr>
+                                        <tr>
+                                            <td>L</td>
+                                            <td>74-78</td>
+                                            <td>100-104</td>
+                                            <td>74</td>
+                                        </tr>
+                                        <tr>
+                                            <td>XL</td>
+                                            <td>78-82</td>
+                                            <td>104-108</td>
+                                            <td>76</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <?php else: ?>
+                    <h5>STOCK DISPONIBLE</h5>
+                    <p id="stock-info">
+                        <?php
+                        $sql_stock = "SELECT SUM(Stock) as StockTotal FROM producto_variantes WHERE IdProducto = ?";
+                        $stmt_stock = $conexion->prepare($sql_stock);
+                        $stmt_stock->bind_param('i', $producto_id);
+                        $stmt_stock->execute();
+                        $resultado_stock = $stmt_stock->get_result();
+                        if ($resultado_stock->num_rows > 0) {
+                            $stock_total = $resultado_stock->fetch_assoc()['StockTotal'];
+                            echo $stock_total . "";
+                        } else {
+                            echo "Sin stock disponible";
+                        }
+                        ?>
+                    </p>
                 <?php endif; ?>
 
                 <div class="guarantee">

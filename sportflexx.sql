@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-10-2024 a las 19:37:12
+-- Tiempo de generación: 19-10-2024 a las 01:10:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -171,21 +171,6 @@ INSERT INTO `menu` (`IdMenu`, `Nombre`, `Ruta`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `opinionproducto`
---
-
-CREATE TABLE `opinionproducto` (
-  `IdOpinionProducto` int(11) NOT NULL,
-  `IdCliente` int(11) NOT NULL,
-  `IdProducto` int(11) NOT NULL,
-  `Comentario` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `Calificacion` int(11) DEFAULT NULL CHECK (`Calificacion` between 1 and 5),
-  `FechaOpinion` date NOT NULL DEFAULT curdate()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `pedido`
 --
 
@@ -256,7 +241,7 @@ INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `P
 (106, 'Mochila Tennis', 'Mochila diseñada especialmente para equipos de tennis', 3, 69.99, '2024-09-20', 'Mochila Tennis.png'),
 (107, 'Mochilón Negro', 'Mochilón negro con múltiples compartimientos', 3, 89.99, '2024-09-20', 'mochilon negro.png'),
 (108, 'Tomatodo', 'Botella de agua Tomatodo resistente para actividades deportivas', 3, 19.99, '2024-09-20', 'tomatodo.png'),
-(109, 'Camiseta Negra Manga Corta', 'Camiseta deportiva negra de manga corta, ideal para entrenamientos intensos.', 1, 89.90, '2024-09-20', 'Camiseta Negra Manga Corta.png'),
+(109, 'Camiseta Negra Manga Corta', 'Details Style Laux_RB - 50530190 A high-impact jacket by HUGO, with a signature bull motif front and back. ', 1, 89.90, '2024-09-20', 'Camiseta Negra Manga Corta.png'),
 (110, 'Camiseta Blanca sin Mangas', 'Camiseta blanca sin mangas para mayor libertad de movimiento.', 1, 74.90, '2024-09-20', 'image2.png'),
 (111, 'Camiseta Verde Oliva', 'Camiseta ajustada verde oliva, perfecta para entrenamiento en el gimnasio.', 1, 85.00, '2024-09-20', 'image3.png'),
 (112, 'Conjunto Deportivo Azul', 'Conjunto deportivo azul con sudadera y pantalones, ideal para entrenamiento o uso diario.', 1, 179.90, '2024-09-20', 'image4.png'),
@@ -276,7 +261,12 @@ INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `P
 (126, 'Conjunto Deportivo Blanco', 'Conjunto deportivo blanco, perfecto para actividades físicas o relajación.', 2, 59.99, '2024-09-20', 'flaca9.png'),
 (131, 'Camiseta Clásica de Fernando Alonso en Renault', 'Camiseta Clásica de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'imagen1.png'),
 (132, 'Camiseta Retro de Fernando Alonso en Renault', 'Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault Camiseta Retro de Fernando Alonso en Renault', 4, 230.00, '2024-10-01', 'Captura de pantalla 2024-10-01 152651.png'),
-(133, 'Pantalón Corto de Fernando Alonso en Renault', 'Pantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault', 4, 65.00, '2024-09-30', '66fc5ea1ef3b0.png');
+(133, 'Pantalón Corto de Fernando Alonso en Renault', 'Pantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault\r\nPantalón Corto de Fernando Alonso en Renault', 4, 65.00, '2024-09-30', '66fc5ea1ef3b0.png'),
+(141, 'Camiseta Renault R25 2005 Fernando Alonso F1', 'Esta camiseta fue creada para ser un compañero versátil y elegante para todas tus apariencias casuales. Con su tejido de punto de microfibra, grueso y de textura única, esta camiseta tiene una sensación premium y suave que sigue siendo ligera y altam', 4, 117.42, '2024-10-18', '6712d5c343f1e.png'),
+(142, 'ING RENAULT F1 TEAM OFICIAL POLAR RETRO VINTAGE FERNANDO ALONSO', 'Renault F1 Team ING Formula One 1 Racing Motorsport azul amarillo chaqueta', 4, 488.41, '2024-10-18', '6712d6525ceda.png'),
+(143, 'Daring Renault F1 Team Fernando Alonso Camiseta Precisport', 'El color en el artículo puede estar ligeramente apagado debido a la iluminación', 4, 1315.02, '2024-10-18', '6712d68c836e0.png'),
+(144, 'Polo Original Giancarlo Physiella 2005 Colección Renault F1 Team', 'Polo Original GIANCARLO FISICHELLA Colección 2005 RENAULT F1 TEAM', 4, 920.54, '2024-10-18', '6712d71535586.png'),
+(145, 'Camiseta De Colección 2005 Fernando Alonso Azul Nueva Con Etiquetas F1 Campeón del Mundo Renault', 'ganga', 4, 149.84, '2024-10-18', '6712d771cae6a.png');
 
 -- --------------------------------------------------------
 
@@ -288,7 +278,6 @@ CREATE TABLE `producto_variantes` (
   `IdVariante` int(11) NOT NULL,
   `IdProducto` int(11) NOT NULL,
   `Talla` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `Color` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `Stock` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -296,15 +285,120 @@ CREATE TABLE `producto_variantes` (
 -- Volcado de datos para la tabla `producto_variantes`
 --
 
-INSERT INTO `producto_variantes` (`IdVariante`, `IdProducto`, `Talla`, `Color`, `Stock`) VALUES
-(1, 109, 'M', 'Negro', 25),
-(37, 126, 'S', 'Gris', 20),
-(38, 126, 'M', 'Negro', 36),
-(40, 131, 'L', 'Celeste', 35),
-(41, 132, 'M', 'Celeste', 30),
-(42, 133, 'M', 'Celeste', 25),
-(45, 109, 'XL', NULL, 34),
-(48, 109, 'S', NULL, 20);
+INSERT INTO `producto_variantes` (`IdVariante`, `IdProducto`, `Talla`, `Stock`) VALUES
+(1, 109, 'M', 25),
+(2, 118, 'M', 20),
+(3, 118, 'L', 15),
+(4, 118, 'XL', 30),
+(5, 119, 'S', 10),
+(6, 119, 'M', 20),
+(7, 119, 'L', 15),
+(8, 119, 'XL', 30),
+(9, 120, 'S', 10),
+(10, 120, 'M', 20),
+(11, 120, 'L', 15),
+(12, 120, 'XL', 30),
+(13, 121, 'S', 10),
+(14, 121, 'M', 20),
+(15, 121, 'L', 15),
+(16, 121, 'XL', 30),
+(17, 122, 'S', 10),
+(18, 122, 'M', 20),
+(19, 122, 'L', 15),
+(20, 122, 'XL', 30),
+(21, 123, 'S', 10),
+(22, 123, 'M', 20),
+(23, 123, 'L', 15),
+(24, 123, 'XL', 30),
+(25, 124, 'S', 10),
+(26, 124, 'M', 20),
+(27, 124, 'L', 15),
+(28, 124, 'XL', 30),
+(29, 125, 'S', 10),
+(30, 125, 'M', 20),
+(31, 125, 'L', 15),
+(32, 125, 'XL', 30),
+(33, 126, 'S', 10),
+(34, 126, 'M', 20),
+(35, 126, 'L', 15),
+(36, 126, 'XL', 30),
+(37, 126, 'S', 20),
+(38, 126, 'M', 12),
+(40, 131, 'L', 5),
+(41, 132, 'M', 10),
+(42, 133, 'M', 12),
+(45, 109, 'XL', 34),
+(48, 109, 'S', 20),
+(49, 109, 'L', 15),
+(50, 110, 'S', 15),
+(51, 110, 'M', 10),
+(52, 110, 'L', 10),
+(53, 110, 'XL', 23),
+(54, 100, 'S', 15),
+(55, 100, 'M', 10),
+(56, 111, 'S', 10),
+(57, 111, 'M', 36),
+(58, 111, 'L', 15),
+(59, 111, 'XL', 12),
+(60, 131, 'M', 15),
+(61, 131, 'S', 10),
+(62, 131, 'XL', 15),
+(63, 132, 'S', 15),
+(64, 132, 'XL', 12),
+(65, 132, 'L', 10),
+(66, 133, 'XL', 10),
+(67, 133, 'L', 10),
+(68, 133, 'S', 10),
+(69, 141, 'S', 12),
+(70, 141, 'M', 10),
+(71, 141, 'L', 10),
+(72, 141, 'XL', 20),
+(73, 142, 'S', 12),
+(74, 142, 'M', 15),
+(75, 142, 'L', 14),
+(76, 142, 'XL', 10),
+(77, 143, 'S', 9),
+(78, 143, 'M', 7),
+(79, 143, 'L', 15),
+(80, 143, 'XL', 10),
+(81, 144, 'M', 15),
+(82, 144, 'L', 10),
+(83, 145, 'S', 20),
+(84, 145, 'M', 10),
+(85, 118, 'S', 10),
+(86, 100, NULL, 15),
+(87, 101, NULL, 15),
+(88, 102, NULL, 15),
+(89, 103, NULL, 15),
+(90, 104, NULL, 15),
+(91, 105, NULL, 15),
+(92, 106, NULL, 15),
+(93, 107, NULL, 15),
+(94, 108, NULL, 15),
+(95, 112, 'S', 10),
+(96, 112, 'M', 20),
+(97, 112, 'L', 15),
+(98, 112, 'XL', 30),
+(99, 113, 'S', 10),
+(100, 113, 'M', 20),
+(101, 113, 'L', 15),
+(102, 113, 'XL', 30),
+(103, 114, 'S', 10),
+(104, 114, 'M', 20),
+(105, 114, 'L', 15),
+(106, 114, 'XL', 30),
+(107, 115, 'S', 10),
+(108, 115, 'M', 20),
+(109, 115, 'L', 15),
+(110, 115, 'XL', 30),
+(111, 116, 'S', 10),
+(112, 116, 'M', 20),
+(113, 116, 'L', 15),
+(114, 116, 'XL', 30),
+(115, 117, 'S', 10),
+(116, 117, 'M', 20),
+(117, 117, 'L', 15),
+(118, 117, 'XL', 30);
 
 -- --------------------------------------------------------
 
@@ -440,14 +534,6 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`IdMenu`);
 
 --
--- Indices de la tabla `opinionproducto`
---
-ALTER TABLE `opinionproducto`
-  ADD PRIMARY KEY (`IdOpinionProducto`),
-  ADD KEY `IdProducto` (`IdProducto`),
-  ADD KEY `IdCliente` (`IdCliente`);
-
---
 -- Indices de la tabla `pedido`
 --
 ALTER TABLE `pedido`
@@ -542,13 +628,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `IdProducto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=146;
 
 --
 -- AUTO_INCREMENT de la tabla `producto_variantes`
 --
 ALTER TABLE `producto_variantes`
-  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `IdVariante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -586,13 +672,6 @@ ALTER TABLE `detallepedido`
   ADD CONSTRAINT `detallepedido_ibfk_2` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_detallepedido_pedido` FOREIGN KEY (`IdPedido`) REFERENCES `pedido` (`IdPedido`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_detallepedido_producto` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`) ON DELETE CASCADE;
-
---
--- Filtros para la tabla `opinionproducto`
---
-ALTER TABLE `opinionproducto`
-  ADD CONSTRAINT `fk_opinionproducto_cliente` FOREIGN KEY (`IdCliente`) REFERENCES `cliente` (`IdCliente`),
-  ADD CONSTRAINT `fk_opinionproducto_producto` FOREIGN KEY (`IdProducto`) REFERENCES `producto` (`IdProducto`);
 
 --
 -- Filtros para la tabla `rolmenu`

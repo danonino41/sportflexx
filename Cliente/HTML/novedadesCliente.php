@@ -20,7 +20,7 @@ function mostrarProductoNovedades($conexion) {
             $imagenRuta = "../ImagenProductos/default.png";
         }
 
-        $nombreProducto = (strlen($row['Nombre']) > 50) ? substr($row['Nombre'], 0, 50) . '...' : $row['Nombre'];
+        $nombreProducto = (strlen($row['Nombre']) > 40) ? substr($row['Nombre'], 0, 40) . '...' : $row['Nombre'];
 
         echo '<div class="col">
                 <div class="card h-100">

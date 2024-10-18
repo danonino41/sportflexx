@@ -17,6 +17,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
 <style>
+
+#chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
     .centrar {
         padding-bottom: 35px;
     }
@@ -95,6 +102,11 @@
     </div>
     <BR></BR>
 
+    <div id="chatbot-container">
+    <?php include 'chatbot.php'; ?>
+</div>
+
+
     <?php include_once "footer.php"; ?>
 
     <script>
@@ -103,6 +115,7 @@
             box.classList.toggle('clicked');
         }
     </script>
+    
 
 </body>
 
