@@ -50,6 +50,11 @@
         </div>
       </div>
   </div>
+
+  <div class="chatbot">
+    <?php include_once "chatbot.php"; ?>
+  </div>
+
   </footer>
   <!--CHAT EN VIVO TIDIO
   <script src="//code.tidio.co/wcj8zzu70stazyfxkokdcekhiau9gzxy.js" async></script>-->
