@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-10-2024 a las 01:10:59
+-- Tiempo de generación: 23-10-2024 a las 04:55:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sportflexx`
 --
-CREATE DATABASE IF NOT EXISTS `sportflexx` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `sportflexx`;
 
 -- --------------------------------------------------------
 
@@ -265,7 +263,7 @@ INSERT INTO `producto` (`IdProducto`, `Nombre`, `Descripcion`, `IdCategoria`, `P
 (141, 'Camiseta Renault R25 2005 Fernando Alonso F1', 'Esta camiseta fue creada para ser un compañero versátil y elegante para todas tus apariencias casuales. Con su tejido de punto de microfibra, grueso y de textura única, esta camiseta tiene una sensación premium y suave que sigue siendo ligera y altam', 4, 117.42, '2024-10-18', '6712d5c343f1e.png'),
 (142, 'ING RENAULT F1 TEAM OFICIAL POLAR RETRO VINTAGE FERNANDO ALONSO', 'Renault F1 Team ING Formula One 1 Racing Motorsport azul amarillo chaqueta', 4, 488.41, '2024-10-18', '6712d6525ceda.png'),
 (143, 'Daring Renault F1 Team Fernando Alonso Camiseta Precisport', 'El color en el artículo puede estar ligeramente apagado debido a la iluminación', 4, 1315.02, '2024-10-18', '6712d68c836e0.png'),
-(144, 'Polo Original Giancarlo Physiella 2005 Colección Renault F1 Team', 'Polo Original GIANCARLO FISICHELLA Colección 2005 RENAULT F1 TEAM', 4, 920.54, '2024-10-18', '6712d71535586.png'),
+(144, 'Camiseta Giancarlo Physiella 2005 Colección Renault F1 Team', 'Polo Original GIANCARLO FISICHELLA Colección 2005 RENAULT F1 TEAM', 4, 920.54, '2024-10-18', '6712d71535586.png'),
 (145, 'Camiseta De Colección 2005 Fernando Alonso Azul Nueva Con Etiquetas F1 Campeón del Mundo Renault', 'ganga', 4, 149.84, '2024-10-18', '6712d771cae6a.png');
 
 -- --------------------------------------------------------
