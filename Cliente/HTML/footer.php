@@ -57,7 +57,7 @@
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
       v.onload = function() {
         window.voiceflow.chat.load({
-          verify: { projectID: '6712c7a6b2c68d651860c2b8' },
+          verify: { projectID: '6716ff55b2c68d65186362cd' },
           url: 'https://general-runtime.voiceflow.com',
           versionID: 'production'
         });
@@ -65,12 +65,9 @@
       v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
   })(document, 'script');
 </script>
+
   <!--CHAT EN VIVO TIDIO-->
   <!--<script src="//code.tidio.co/wcj8zzu70stazyfxkokdcekhiau9gzxy.js" async></script>-->
-  <!-- chatbot stack.ia 
-  <script
-    src="https://unpkg.com/react-stackai@latest/dist/vanilla/vanilla-stackai.js"
-    data-project-url="https://www.stack-ai.com/embed/7edeee3a-e795-4c79-806a-af791ded4d92/6db7ff1f-f081-4d56-961d-b77fbca4b514/6709a16941dfb72246982f3f">
-  </script>-->
+
 
   

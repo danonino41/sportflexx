@@ -139,20 +139,17 @@ include_once "footer_Admin.php";
     document.addEventListener("DOMContentLoaded", () => {
         const editButtons = document.querySelectorAll(".edit-btn");
         
-        // Al hacer clic en un botón "Editar", cargamos los datos en el formulario
         editButtons.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
                 
-                // Asignamos los valores de la fila a los campos del formulario
                 document.getElementById("IdVariante").value = button.getAttribute("data-id");
-                document.getElementById("variant-product").value = row.cells[0].innerText; // IdProducto
-                document.getElementById("variant-size").value = row.cells[2].innerText;    // Talla
-                document.getElementById("variant-stock").value = row.cells[3].innerText;   // Stock
+                document.getElementById("variant-product").value = row.cells[0].innerText;
+                document.getElementById("variant-size").value = row.cells[2].innerText; 
+                document.getElementById("variant-stock").value = row.cells[3].innerText;
             });
         });
 
-        // Confirmación de eliminación
         const deleteForms = document.querySelectorAll(".delete-form");
         deleteForms.forEach(form => {
             form.addEventListener("submit", (event) => {
@@ -164,12 +161,11 @@ include_once "footer_Admin.php";
             });
         });
 
-        // Función para limpiar el formulario al agregar una nueva variante
         window.clearForm = function () {
-            document.getElementById("IdVariante").value = "0"; // Valor 0 significa nueva variante
-            document.getElementById("variant-product").value = "";  // Limpiamos el producto
-            document.getElementById("variant-size").value = "";     // Limpiamos la talla
-            document.getElementById("variant-stock").value = "";    // Limpiamos el stock
+            document.getElementById("IdVariante").value = "0";
+            document.getElementById("variant-product").value = "";
+            document.getElementById("variant-size").value = "";  
+            document.getElementById("variant-stock").value = "";
         };
     });
 </script>

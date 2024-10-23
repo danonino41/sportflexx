@@ -101,13 +101,7 @@
         </div>
     </div>
     <BR></BR>
-
-    <div id="chatbot-container">
-    <?php include 'chatbot.php'; ?>
-</div>
-
-
-    <?php include_once "footer.php"; ?>
+<?php include_once "footer.php"; ?>
 
     <script>
         function toggleBlur(boxId) {

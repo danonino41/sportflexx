@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once "navbar.php";
 require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
 $obj = new Conectar();
 $conexion = $obj->getConexion();
@@ -70,6 +69,8 @@ function mostrarProductosHombre($conexion) {
     
 </style>
 <body>
+<?php include_once "navbar.php"; ?>
+
 <div class="container mt-5">
     <h3 class="text-left my-2">HOMBRE</h3>
     <div class="row row-cols-2 row-cols-md-4 g-4 py-5">

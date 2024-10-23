@@ -1,5 +1,4 @@
 <?php
-include_once "navbar.php";
 session_start();
 require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
 $obj = new Conectar();
@@ -72,6 +71,7 @@ function mostrarProductos($categoriaId, $conexion) {
   
 </style>
 <body>
+<?php include_once "navbar.php"; ?>
   <div class="container-fluid p-0">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">

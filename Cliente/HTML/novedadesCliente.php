@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once "navbar.php";
 require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
 $obj = new Conectar();
 $conexion = $obj->getConexion();
@@ -186,8 +185,8 @@ function mostrarProductoNovedades($conexion) {
     }
   }
 </style>
-
 <body>
+<?php include_once "navbar.php"; ?>
   <div class="container-fluid p-0">
     <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">

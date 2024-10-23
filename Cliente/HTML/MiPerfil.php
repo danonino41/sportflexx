@@ -1,5 +1,4 @@
 <?php
-include_once "navbar.php";
 require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
 session_start();
 if (!isset($_SESSION['IdUsuario'])) {
@@ -58,6 +57,7 @@ mysqli_close($conexion);
     }
 </style>
 <body>
+<?php include_once "navbar.php"; ?>
         <div class="page-wrapper">
             <div class="container-fluid">
                 <div class="row page-titles">
