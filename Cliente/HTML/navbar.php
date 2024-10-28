@@ -7,7 +7,7 @@
 <body>
 <nav class="navbar navbar-expand-lg sticky-top navbar-custom">
     <div class="container-fluid">
-        <a href="MenuPrincipalCliente.php" class="navbar-brand text-info fw-semibold fs-4">SPORTFLEXX</a>
+        <a href="MenuPrincipalCliente.php" class="navbar-brand text-info fw-semibold fs-4"><img src="../ImagenMenu/icono.png" width=350px alt=""></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
             <span class="navbar-toggler-icon"></span>
         </button>
