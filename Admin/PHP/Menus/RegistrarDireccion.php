@@ -13,12 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn = $obj->getConexion();
 
     if ($idDireccion > 0) {
-        // Actualizar la dirección existente
         $sql = "UPDATE direccion SET IdCliente = ?, Departamento = ?, Provincia = ?, Distrito = ?, Direccion = ? WHERE IdDireccion = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("issssi", $idCliente, $departamento, $provincia, $distrito, $direccion, $idDireccion);
     } else {
-        // Crear una nueva dirección
         $sql = "INSERT INTO direccion (IdCliente, Departamento, Provincia, Distrito, Direccion) VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("issss", $idCliente, $departamento, $provincia, $distrito, $direccion);

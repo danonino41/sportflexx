@@ -2,14 +2,17 @@
 session_start();
 require_once(__DIR__ . "/../../Admin/PHP/coneccion/conector.php");
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btnRegistrar'])) {
+// Cargar archivo de registro de usuario solo si se envía btnRegistrar
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['btnRegistrar'])) {
     require_once(__DIR__ . "/../../Admin/PHP/Menus/registrarUsuario.php");
 }
 
+// Configuración de errores para desarrollo
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Captura de mensajes de error o éxito desde sesión
 $mensaje = '';
 if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
@@ -34,8 +37,7 @@ if (isset($_SESSION['mensaje'])) {
             <form method="POST" action="login2.php" autocomplete="off">
                 <h1>Registrarse</h1>
                 <input type="text" placeholder="Usuario" name="NombreUsuario" id="NombreUsuario" required>
-                <input type="email" placeholder="Correo electrónico" name="CorreoElectronico" id="CorreoElectronico"
-                    required>
+                <input type="email" placeholder="Correo electrónico" name="CorreoElectronico" id="CorreoElectronico" required>
                 <input type="password" placeholder="Contraseña" name="Contrasena" id="Contrasena" required>
                 <input type="password" name="ConfirmarContrasena" placeholder="Confirmar contraseña" required>
                 <input type="text" placeholder="Nombre" name="Nombre" required>
@@ -51,12 +53,11 @@ if (isset($_SESSION['mensaje'])) {
                 <input type="tel" placeholder="Número de celular" name="Telefono" required>
                 <input type="text" placeholder="DNI" name="Dni" required>
                 <input type="text" placeholder="Dirección" name="Direccion" required>
-                <button name="btnRegistrar">Registrarse</button>
+                <button type="submit" name="btnRegistrar">Registrarse</button>
             </form>
-
-
         </div>
 
+        <!-- Formulario de Inicio de Sesión -->
         <div class="form-container sign-in">
             <form method="POST" action="../../Admin/PHP/Menus/ControladorUsuario.php">
                 <h1>Iniciar sesión</h1>
@@ -67,21 +68,22 @@ if (isset($_SESSION['mensaje'])) {
                 <span>O</span>
                 <?php if ($mensaje): ?>
                 <div class="alert alert-danger" role="alert">
-                    <?= $mensaje ?>
+                    <?= htmlspecialchars($mensaje) ?>
                 </div>
                 <?php endif; ?>
-                <input type="text" placeholder="Usuario" name="NombreUsuario" id="NombreUsuario" required autofocus>
-                <input type="password" placeholder="Contraseña" name="Contrasena" id="Contrasena" required>
+                <input type="text" placeholder="Usuario" name="NombreUsuario" required autofocus>
+                <input type="password" placeholder="Contraseña" name="Contrasena" required>
                 <a href="#">¿Olvidaste tu contraseña?</a>
-                <button name="btnLogin">Iniciar sesión</button>
+                <button type="submit" name="btnLogin">Iniciar sesión</button>
             </form>
         </div>
 
+        <!-- Contenedor de Alternancia -->
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
                     <h1>¡Bienvenido de nuevo!</h1>
-                    <p>Ingrese su cuenta para utilizar todas las funciones del sitio</p>
+                    <p>Ingrese a su cuenta para utilizar todas las funciones del sitio</p>
                     <button class="hidden" id="login">Iniciar sesión</button>
                 </div>
                 <div class="toggle-panel toggle-right">
@@ -92,12 +94,10 @@ if (isset($_SESSION['mensaje'])) {
             </div>
         </div>
     </div>
+    
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-    <?php
-    $hashedPassword = password_hash('NuevaContraseña', PASSWORD_DEFAULT);
-
-    ?>
 </body>
 
 </html>

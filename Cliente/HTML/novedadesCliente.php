@@ -22,7 +22,7 @@ function mostrarProductoNovedades($conexion) {
         $nombreProducto = (strlen($row['Nombre']) > 40) ? substr($row['Nombre'], 0, 40) . '...' : $row['Nombre'];
 
         echo '<div class="col">
-                <div class="card h-100">
+                <div class="card h-100 product-card">
                     <img src="' . $imagenRuta . '" class="card-img-top" alt="Imagen de ' . htmlspecialchars($row['Nombre']) . '">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <h5 class="card-title wbon">' . htmlspecialchars($nombreProducto) . '</h5>
@@ -55,6 +55,9 @@ function mostrarProductoNovedades($conexion) {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
 <style>
+  .offcanvas-body {
+    background: #FFD200 ;
+  }
   .navbar-custom{
     background: #FFD200 ;
   }

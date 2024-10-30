@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->begin_transaction();
 
     try {
-        // Verificar si el cliente existe
         $sqlCheckCliente = "SELECT COUNT(*) FROM cliente WHERE IdCliente = ?";
         $stmtCheckCliente = $conn->prepare($sqlCheckCliente);
         $stmtCheckCliente->bind_param("i", $idCliente);
@@ -29,12 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if ($idPedido > 0) {
-            // Actualizar el pedido existente
             $sql = "UPDATE pedido SET IdCliente = ?, NumeroPedido = ?, Estado = ?, FechaPedido = ?, FechaEntrega = ?, IdCuponDescuento = ? WHERE IdPedido = ?";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("issssii", $idCliente, $numeroPedido, $estado, $fechaPedido, $fechaEntrega, $idCuponDescuento, $idPedido);
         } else {
-            // Crear un nuevo pedido
             $sql = "INSERT INTO pedido (IdCliente, NumeroPedido, Estado, FechaPedido, FechaEntrega, IdCuponDescuento) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("issssi", $idCliente, $numeroPedido, $estado, $fechaPedido, $fechaEntrega, $idCuponDescuento);
@@ -45,7 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $idPedido = $stmt->insert_id;
             }
 
-            // Borrar detalles existentes si es una actualización
             if ($idPedido > 0) {
                 $sqlDeleteDetalles = "DELETE FROM detallepedido WHERE IdPedido = ?";
                 $stmtDeleteDetalles = $conn->prepare($sqlDeleteDetalles);
@@ -53,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtDeleteDetalles->execute();
             }
 
-            // Verificar que existan detalles del pedido
             if (isset($_POST['IdProducto']) && isset($_POST['Cantidad']) && isset($_POST['PrecioUnitario']) && isset($_POST['Descuento'])) {
                 $productos = $_POST['IdProducto'];
                 $cantidades = $_POST['Cantidad'];
@@ -67,7 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $costoUnitario = $costosUnitarios[$i];
                         $descuento = isset($descuentos[$i]) ? $descuentos[$i] : 0;
 
-                        // Verificar si el producto existe
                         $sqlCheckProducto = "SELECT COUNT(*) FROM producto WHERE IdProducto = ?";
                         $stmtCheckProducto = $conn->prepare($sqlCheckProducto);
                         $stmtCheckProducto->bind_param("i", $idProducto);
@@ -77,7 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $stmtCheckProducto->close();
 
                         if ($productoExiste > 0) {
-                            // Obtener descuento del cupon
                             $descuentoCupon = 0;
                             if ($idCuponDescuento) {
                                 $sqlCupon = "SELECT DescuentoPorcentaje FROM cupondescuento WHERE IdCuponDescuento = ?";

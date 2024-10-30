@@ -131,11 +131,15 @@ if (isset($_GET['id'])) {
 
 <?php include_once "navbar.php"; ?>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
+        <div class="container">
+
+        <div class="row">
+            <div class="col-md-6">
             <?php if ($producto): ?>
-                <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto['ImagenProducto']; ?>" class="img-fluid product-img" alt="<?php echo htmlspecialchars($producto['Nombre']); ?>">
+                <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto['ImagenProducto']; ?>" 
+                    class="img-fluid product-img" 
+                    alt="<?php echo htmlspecialchars($producto['Nombre']); ?>" 
+                    style="width: 450px; max-height: 100%; object-fit: cover; border-radius: 10px;">
             <?php else: ?>
                 <p>No hay imagen disponible</p>
             <?php endif; ?>
@@ -254,7 +258,7 @@ if (isset($_GET['id'])) {
                 </div>
 
                 <?php else: ?>
-                    <h5>STOCK DISPONIBLE</h5>
+                    <h5>STOCK</h5>
                     <p id="stock-info">
                         <?php
                         $sql_stock = "SELECT SUM(Stock) as StockTotal FROM producto_variantes WHERE IdProducto = ?";
@@ -310,6 +314,36 @@ if (isset($_GET['id'])) {
                 <p>No se encontró el producto.</p>
             <?php endif; ?>
         </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h3 class="mb-4 text-center">Productos Relacionados</h3>
+    <div class="row">
+        <?php
+        $sql_relacionados = "SELECT p.IdProducto, p.Nombre, p.PrecioUnitario, p.ImagenProducto 
+                             FROM producto p 
+                             WHERE p.IdCategoria = ? AND p.IdProducto != ? 
+                             LIMIT 4"; 
+        $stmt_relacionados = $conexion->prepare($sql_relacionados);
+        $stmt_relacionados->bind_param('ii', $producto['IdCategoria'], $producto_id);
+        $stmt_relacionados->execute();
+        $resultado_relacionados = $stmt_relacionados->get_result();
+
+        while ($producto_relacionado = $resultado_relacionados->fetch_assoc()):
+            $nombreProducto = (strlen($producto_relacionado['Nombre']) > 25) ? substr($producto_relacionado['Nombre'], 0, 20) . '...' : $producto_relacionado['Nombre'];
+        ?>
+            <div class="col-6 col-md-3" style="margin-top: 20px">
+                <div class="card product-card h-100 text-center border-0">
+                    <img src="http://localhost/SPORTFLEXX/Cliente/ImagenProductos/<?php echo $producto_relacionado['ImagenProducto']; ?>" class="card-img-top img-fluid" alt="<?php echo htmlspecialchars($nombreProducto); ?>">
+                    <div class="card-body">
+                        <h6 class="card-title wbon"><?php echo htmlspecialchars($nombreProducto); ?></h6>
+                        <p class="precio">S/ <?php echo number_format($producto_relacionado['PrecioUnitario'], 2); ?></p>
+                        <a href="detalles_producto.php?id=<?php echo $producto_relacionado['IdProducto']; ?>" class="btn btn-primary btn-block w-100">Ver detalles</a>
+                    </div>
+                </div>
+            </div>
+        <?php endwhile; ?>
     </div>
 </div>
 

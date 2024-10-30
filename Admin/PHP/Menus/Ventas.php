@@ -1,15 +1,12 @@
 <?php
 require_once(__DIR__ . "/../coneccion/conector.php");
 
-// Crear objeto de la clase Conectar
 $obj = new Conectar();
-// Sentencia select con JOIN para obtener los detalles de la venta
 $sql = "
     SELECT v.IdVenta, v.IdPedido, v.FechaVenta, v.IGV, v.Total, v.Descuento, tp.Tipo
     FROM venta v
     LEFT JOIN tipopago tp ON v.IdTipoPago = tp.IdTipoPago
 ";
-// Obtener los registros de la tabla venta y sus detalles
 $rsVentas = mysqli_query($obj->getConexion(), $sql);
 ?>
 <!DOCTYPE html>
@@ -43,7 +40,6 @@ include_once "navbar_admin.php";
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <!-- Formulario de Venta -->
                                     <form id="Venta-form" method="post" action="RegistrarVenta.php">
                                         <input type="hidden" id="IdVenta" name="IdVenta" value="0">
                                         <div class="mb-3">
@@ -269,7 +265,6 @@ include_once "footer_Admin.php";
             document.getElementById("venta-Total").value = '';
             document.getElementById("venta-IdTipoPago").value = '';
 
-            // Limpiar mensajes de error
             document.getElementById("pedido-error").textContent = "";
             document.getElementById("fecha-error").textContent = "";
             document.getElementById("igv-error").textContent = "";

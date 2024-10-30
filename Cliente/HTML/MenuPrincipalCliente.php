@@ -20,20 +20,20 @@ function mostrarProductos($categoriaId, $conexion) {
             $imagenRuta = "../ImagenProductos/default.png";
         }
 
-        $nombreProducto = (strlen($row['Nombre']) > 50) ? substr($row['Nombre'], 0, 50) . '...' : $row['Nombre'];
+        $nombreProducto = (strlen($row['Nombre']) > 25) ? substr($row['Nombre'], 0, 25) . '...' : $row['Nombre'];
 
         echo '<div class="col">
-                <div class="card h-100">
-                    <img src="' . $imagenRuta . '" class="card-img-top" alt="Imagen de ' . $row['Nombre'] . '">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title wbon">' . htmlspecialchars($nombreProducto) . '</h5>
-                        <p class="precio">S/ ' . number_format($row['PrecioUnitario'], 2) . '</p>
-                        <div class="mt-auto">
-                            <a href="detalles_producto.php?id=' . $row['IdProducto'] . '" class="btn btn-primary w-100">Ver detalles</a>
-                        </div>
-                    </div>
-                </div>
-              </div>';
+              <div class="card h-100 product-card">
+                  <img src="' . $imagenRuta . '" class="card-img-top" alt="Imagen de ' . $row['Nombre'] . '">
+                  <div class="card-body d-flex flex-column justify-content-between">
+                      <h5 class="card-title wbon">' . htmlspecialchars($nombreProducto) . '</h5>
+                      <p class="precio">S/ ' . number_format($row['PrecioUnitario'], 2) . '</p>
+                      <div class="mt-auto">
+                          <a href="detalles_producto.php?id=' . $row['IdProducto'] . '" class="btn btn-primary w-100">Ver detalles</a>
+                      </div>
+                  </div>
+              </div>
+            </div>';
     }
     $stmt->close();
 }
@@ -56,8 +56,12 @@ function mostrarProductos($categoriaId, $conexion) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.min.js" />
 </head>
 <style>
+  .offcanvas-body {
+    background-color: #A3D5FF;
+  }
+
   .navbar-custom {
-  background-color: #A3D5FF;
+    background-color: #A3D5FF;
   }
 
   body {

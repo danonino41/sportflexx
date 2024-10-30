@@ -18,7 +18,6 @@
                         <option value="Enviado">Enviado</option>
                         <option value="Pendiente">Pendiente</option>
                         <option value="Cancelado">Cancelado</option>
-                        <!-- Agrega más opciones según tus estados disponibles -->
                     </select>
                 </div>
                 <div class="col-md-6 d-flex align-items-end">
